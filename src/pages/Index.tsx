@@ -44,7 +44,7 @@ const Index = () => {
             <div className="max-w-2xl text-white">
               <h1 className="text-4xl md:text-6xl font-bold mb-4">
                 Discover Authentic 
-                <span className="block gradient-temple-gold bg-clip-text text-transparent">
+                <span className="block text-primary">
                   Thai Flavors
                 </span>
               </h1>
