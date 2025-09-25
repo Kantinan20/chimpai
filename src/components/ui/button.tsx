@@ -15,6 +15,11 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Thai FlavorVerse Variants
+        thai: "gradient-thai-sunset text-white shadow-thai hover:shadow-temple transition-thai",
+        temple: "gradient-temple-gold text-white shadow-temple hover:scale-105 transition-thai",
+        cultural: "bg-thai-green text-thai-green-foreground hover:bg-thai-green/90 transition-thai",
+        hero: "gradient-thai-sunset text-white shadow-thai hover:shadow-temple hover:scale-105 transition-thai text-lg font-semibold",
       },
       size: {
         default: "h-10 px-4 py-2",
