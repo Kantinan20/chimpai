@@ -17,10 +17,10 @@ const RecipeDetail = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8 text-center">
-          <h1 className="text-2xl font-bold mb-4">Recipe Not Found</h1>
+          <h1 className="text-2xl font-bold mb-4">ไม่พบสูตรอาหาร</h1>
           <Button onClick={() => navigate("/")} variant="outline">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
+            กลับสู่หน้าแรก
           </Button>
         </div>
       </div>
@@ -44,7 +44,7 @@ const RecipeDetail = () => {
           className="mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Dishes
+          กลับสู่เมนูอาหาร
         </Button>
 
         <div className="grid lg:grid-cols-2 gap-8">
@@ -59,14 +59,14 @@ const RecipeDetail = () => {
               {dish.isPersonalized && (
                 <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground">
                   <Sparkles className="h-3 w-3 mr-1" />
-                  AI Match
+                  AI จับคู่
                 </Badge>
               )}
             </div>
             
             <Card>
               <CardHeader>
-                <CardTitle>Quick Info</CardTitle>
+                <CardTitle>ข้อมูลทั่วไป</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-2">
@@ -75,7 +75,7 @@ const RecipeDetail = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">4 servings</span>
+                  <span className="text-sm">4 ที่</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
@@ -86,7 +86,7 @@ const RecipeDetail = () => {
                   <span className="text-sm">{dish.origin}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Spice:</span>
+                  <span className="text-sm text-muted-foreground">ความเผ็ด:</span>
                   <div className="flex gap-1">{getSpiceIcons(dish.spiceLevel)}</div>
                 </div>
                 <Badge variant="outline">{dish.difficulty}</Badge>
@@ -103,10 +103,10 @@ const RecipeDetail = () => {
               <div className="flex gap-3">
                 <Button variant="hero" size="lg">
                   <Play className="h-4 w-4 mr-2" />
-                  Start AR Cooking
+                  เริ่มทำอาหาร AR
                 </Button>
                 <Button variant="cultural">
-                  Find Restaurants
+                  หาร้านอาหาร
                 </Button>
               </div>
             </div>
@@ -117,7 +117,7 @@ const RecipeDetail = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-primary" />
-                    Cultural Story
+                    เรื่องราวทางวัฒนธรรม
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -130,7 +130,7 @@ const RecipeDetail = () => {
             {"ingredients" in dish && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Ingredients</CardTitle>
+                  <CardTitle>ส่วนผสม</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2">
@@ -149,24 +149,24 @@ const RecipeDetail = () => {
             {"nutrition" in dish && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Nutrition Facts</CardTitle>
+                  <CardTitle>ข้อมูลโภชนาการ</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <div className="text-sm text-muted-foreground">Calories</div>
+                      <div className="text-sm text-muted-foreground">แคลอรี่</div>
                       <div className="text-lg font-semibold">{dish.nutrition.calories}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Protein</div>
+                      <div className="text-sm text-muted-foreground">โปรตีน</div>
                       <div className="text-lg font-semibold">{dish.nutrition.protein}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Carbs</div>
+                      <div className="text-sm text-muted-foreground">คาร์โบไฮเดรต</div>
                       <div className="text-lg font-semibold">{dish.nutrition.carbs}</div>
                     </div>
                     <div>
-                      <div className="text-sm text-muted-foreground">Fat</div>
+                      <div className="text-sm text-muted-foreground">ไขมัน</div>
                       <div className="text-lg font-semibold">{dish.nutrition.fat}</div>
                     </div>
                   </div>

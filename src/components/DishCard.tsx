@@ -39,7 +39,7 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
         />
         {dish.isPersonalized && (
           <Badge className="absolute top-2 right-2 bg-primary text-primary-foreground">
-            AI Match
+            AI จับคู่
           </Badge>
         )}
         <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/70 rounded-full px-2 py-1">
@@ -71,7 +71,7 @@ const DishCard = ({ dish, onClick }: DishCardProps) => {
         
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <span className="text-xs text-muted-foreground">Spice:</span>
+            <span className="text-xs text-muted-foreground">ความเผ็ด:</span>
             <div className="flex gap-1">{getSpiceIcons(dish.spiceLevel)}</div>
           </div>
           <Badge variant="outline">{dish.difficulty}</Badge>

@@ -16,9 +16,9 @@ const FlavorDnaCard = ({ onStartOnboarding }: FlavorDnaCardProps) => {
             <Sparkles className="h-8 w-8 text-primary" />
           </div>
         </div>
-        <CardTitle className="text-2xl mb-2">Discover Your Flavor DNA</CardTitle>
+        <CardTitle className="text-2xl mb-2">ค้นพบดีเอ็นเอรสชาติของคุณ</CardTitle>
         <CardDescription className="text-base">
-          Let AI analyze your taste preferences to unlock personalized Thai cuisine recommendations
+          ให้ AI วิเคราะห์รสนิยมของคุณเพื่อปลดล็อกคำแนะนำอาหารไทยส่วนบุคคล
         </CardDescription>
       </CardHeader>
       
@@ -26,15 +26,15 @@ const FlavorDnaCard = ({ onStartOnboarding }: FlavorDnaCardProps) => {
         <div className="flex flex-wrap gap-2 justify-center">
           <Badge variant="secondary" className="flex items-center gap-1">
             <Flame className="h-3 w-3" />
-            Spice Level
+            ระดับความเผ็ด
           </Badge>
           <Badge variant="secondary" className="flex items-center gap-1">
             <Leaf className="h-3 w-3" />
-            Dietary Preferences
+            ความชอบในอาหาร
           </Badge>
           <Badge variant="secondary" className="flex items-center gap-1">
             <Heart className="h-3 w-3" />
-            Flavor Profile
+            โปรไฟล์รสชาติ
           </Badge>
         </div>
         
@@ -43,7 +43,7 @@ const FlavorDnaCard = ({ onStartOnboarding }: FlavorDnaCardProps) => {
           className="w-full" 
           onClick={onStartOnboarding}
         >
-          Start Flavor Journey
+          เริ่มต้นการเดินทางรสชาติ
         </Button>
       </CardContent>
     </Card>

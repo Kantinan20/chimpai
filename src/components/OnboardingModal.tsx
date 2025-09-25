@@ -44,8 +44,8 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">What flavors call to you?</h3>
-              <p className="text-muted-foreground">Select your taste preferences to get personalized recommendations</p>
+              <h3 className="text-xl font-semibold mb-2">รสชาติแบบไหนที่เรียกหาคุณ?</h3>
+              <p className="text-muted-foreground">เลือกรสชาติที่คุณชอบเพื่อรับคำแนะนำส่วนบุคคล</p>
             </div>
             <div className="grid grid-cols-2 gap-3">
               {flavorPreferences.map((pref) => (
@@ -74,14 +74,14 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
         return (
           <div className="space-y-6">
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-2">How much heat can you handle?</h3>
-              <p className="text-muted-foreground">Choose your spice tolerance level</p>
+              <h3 className="text-xl font-semibold mb-2">คุณทานเผ็ดได้แค่ไหน?</h3>
+              <p className="text-muted-foreground">เลือกระดับความเผ็ดที่คุณทานได้</p>
             </div>
             <div className="space-y-4">
               {[
-                { level: 1, label: "Mild", desc: "Just a gentle warmth", emoji: "😊" },
-                { level: 2, label: "Medium", desc: "A nice kick of heat", emoji: "😋" },
-                { level: 3, label: "Hot", desc: "Bring on the fire!", emoji: "🔥" }
+                { level: 1, label: "อ่อน", desc: "ความร้อนเบาๆ", emoji: "😊" },
+                { level: 2, label: "ปานกลาง", desc: "เผ็ดพอดี", emoji: "😋" },
+                { level: 3, label: "เผ็ด", desc: "เผ็ดจัดจ้าน!", emoji: "🔥" }
               ].map((option) => (
                 <Card
                   key={option.level}
@@ -117,12 +117,12 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
                 <Sparkles className="h-12 w-12 text-primary" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold">Your Flavor DNA is Ready!</h3>
+            <h3 className="text-xl font-semibold">ดีเอ็นเอรสชาติของคุณพร้อมแล้ว!</h3>
             <p className="text-muted-foreground">
-              We've analyzed your preferences and created your personalized Thai cuisine profile
+              เราได้วิเคราะห์ความชอบของคุณและสร้างโปรไฟล์อาหารไทยส่วนตัวแล้ว
             </p>
             <div className="bg-gradient-cultural rounded-lg p-4">
-              <h4 className="font-medium mb-2">Your Profile:</h4>
+              <h4 className="font-medium mb-2">โปรไฟล์ของคุณ:</h4>
               <div className="flex flex-wrap gap-2 justify-center">
                 {selectedPreferences.map((pref) => {
                   const preference = flavorPreferences.find(p => p.id === pref);
@@ -133,7 +133,7 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
                   ) : null;
                 })}
                 <Badge variant="secondary">
-                  🌶️ {spiceLevel === 1 ? 'Mild' : spiceLevel === 2 ? 'Medium' : 'Hot'}
+                  🌶️ {spiceLevel === 1 ? 'อ่อน' : spiceLevel === 2 ? 'ปานกลาง' : 'เผ็ด'}
                 </Badge>
               </div>
             </div>
@@ -151,7 +151,7 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
           <DialogTitle className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Sparkles className="h-5 w-5 text-primary" />
-              Flavor DNA Discovery
+              การค้นพบดีเอ็นเอรสชาติ
             </div>
           </DialogTitle>
         </DialogHeader>
@@ -164,7 +164,7 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
           <div className="flex justify-between">
             {step > 1 && (
               <Button variant="outline" onClick={() => setStep(step - 1)}>
-                Back
+                ย้อนกลับ
               </Button>
             )}
             <div className="flex-1" />
@@ -174,11 +174,11 @@ const OnboardingModal = ({ isOpen, onClose, onComplete }: OnboardingModalProps) 
                 onClick={handleNext}
                 disabled={step === 1 && selectedPreferences.length === 0}
               >
-                Next <ArrowRight className="h-4 w-4 ml-1" />
+                ถัดไป <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
             ) : (
               <Button variant="hero" onClick={handleComplete}>
-                Complete Profile
+                เสร็จสิ้นโปรไฟล์
               </Button>
             )}
           </div>

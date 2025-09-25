@@ -20,8 +20,8 @@ const Index = () => {
   const handleOnboardingComplete = (preferences: string[]) => {
     setUserPreferences(preferences);
     toast({
-      title: "Flavor DNA Created! 🎉",
-      description: "Your personalized Thai food journey begins now",
+      title: "สร้างดีเอ็นเอรสชาติแล้ว! 🎉",
+      description: "การเดินทางสู่อาหารไทยส่วนตัวของคุณเริ่มต้นแล้ว",
     });
   };
 
@@ -43,20 +43,20 @@ const Index = () => {
           <div className="container mx-auto px-4 h-full flex items-center relative z-10">
             <div className="max-w-2xl text-white">
               <h1 className="text-4xl md:text-6xl font-bold mb-4">
-                Discover Authentic 
+                ค้นพบรสชาติ
                 <span className="block text-primary">
-                  Thai Flavors
+                  ไทยแท้
                 </span>
               </h1>
               <p className="text-lg md:text-xl mb-6 text-white/90">
-                AI-powered personalization meets centuries of culinary tradition
+                การปรับแต่งด้วย AI พบกับประเพณีการทำอาหารหลายศตวรรษ
               </p>
               <Button 
                 variant="hero" 
                 size="lg"
                 onClick={() => setShowOnboarding(true)}
               >
-                Start Your Flavor Journey
+                เริ่มต้นการเดินทางรสชาติ
               </Button>
             </div>
           </div>
@@ -75,10 +75,10 @@ const Index = () => {
         {userPreferences.length > 0 && (
           <section>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">Personalized for You</h2>
+              <h2 className="text-2xl font-bold">แนะนำเฉพาะสำหรับคุณ</h2>
               <Badge variant="secondary" className="flex items-center gap-1">
                 <TrendingUp className="h-4 w-4" />
-                AI Matched
+                AI จับคู่
               </Badge>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -98,8 +98,8 @@ const Index = () => {
         {/* Featured Dishes */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Featured Thai Dishes</h2>
-            <Button variant="outline">View All</Button>
+            <h2 className="text-2xl font-bold">อาหารไทยแนะนำ</h2>
+            <Button variant="outline">ดูทั้งหมด</Button>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredDishes.map((dish) => (
@@ -117,17 +117,17 @@ const Index = () => {
           <div className="text-center p-6 bg-gradient-cultural rounded-lg">
             <MapPin className="h-8 w-8 text-primary mx-auto mb-2" />
             <h3 className="text-2xl font-bold">150+</h3>
-            <p className="text-muted-foreground">Thai Restaurants</p>
+            <p className="text-muted-foreground">ร้านอาหารไทย</p>
           </div>
           <div className="text-center p-6 bg-gradient-cultural rounded-lg">
             <Users className="h-8 w-8 text-primary mx-auto mb-2" />
             <h3 className="text-2xl font-bold">10K+</h3>
-            <p className="text-muted-foreground">Food Explorers</p>
+            <p className="text-muted-foreground">นักสำรวจอาหาร</p>
           </div>
           <div className="text-center p-6 bg-gradient-cultural rounded-lg">
             <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
             <h3 className="text-2xl font-bold">500+</h3>
-            <p className="text-muted-foreground">Authentic Recipes</p>
+            <p className="text-muted-foreground">สูตรอาหารแท้</p>
           </div>
         </section>
       </div>
