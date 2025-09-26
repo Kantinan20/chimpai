@@ -126,3 +126,135 @@ export const flavorPreferences = [
   { id: "healthy", label: "เพื่อสุขภาพ", icon: "💚" },
   { id: "comfort", label: "อาหารปลอบใจ", icon: "🍜" }
 ];
+
+export const trendingFoodsToday = [
+  {
+    id: "trending-1",
+    name: "ลาบหมูกรอบ",
+    image: "/api/placeholder/300/200",
+    description: "ลาบหมูกรอบสไตล์อีสาน เสิร์ฟพร้อมผักสด",
+    trendingRank: 1,
+    views: "15.2K",
+    timeframe: "วันนี้"
+  },
+  {
+    id: "trending-2", 
+    name: "ข้าวซอยไก่",
+    image: "/api/placeholder/300/200",
+    description: "ข้าวซอยไก่เชียงใหม่แท้ กะทิเข้มข้น",
+    trendingRank: 2,
+    views: "12.8K",
+    timeframe: "วันนี้"
+  },
+  {
+    id: "trending-3",
+    name: "มะม่วงข้าวเหนียว",
+    image: "/api/placeholder/300/200", 
+    description: "ขนมไทยคลาสสิค มะม่วงหวานกะทิหอม",
+    trendingRank: 3,
+    views: "10.5K",
+    timeframe: "วันนี้"
+  }
+];
+
+export const recommendedRestaurants = [
+  {
+    id: "rest-1",
+    name: "ร้านส้มตำนางรำ",
+    image: "/api/placeholder/400/250",
+    cuisine: "อาหารอีสาน",
+    rating: 4.8,
+    reviews: 1245,
+    distance: "0.8 กม.",
+    priceRange: "฿฿",
+    specialDish: "ส้มตำไทย",
+    openUntil: "23:00"
+  },
+  {
+    id: "rest-2",
+    name: "เฮือนแก้วเมืองเชียงใหม่",
+    image: "/api/placeholder/400/250", 
+    cuisine: "อาหารเหนือ",
+    rating: 4.9,
+    reviews: 890,
+    distance: "1.2 กม.",
+    priceRange: "฿฿฿",
+    specialDish: "ข้าวซอยไก่",
+    openUntil: "22:00"
+  },
+  {
+    id: "rest-3",
+    name: "ครัวคุณยาย",
+    image: "/api/placeholder/400/250",
+    cuisine: "อาหารไทยโบราณ", 
+    rating: 4.7,
+    reviews: 2156,
+    distance: "0.5 กม.",
+    priceRange: "฿฿",
+    specialDish: "แกงเขียวหวานไก่",
+    openUntil: "21:30"
+  }
+];
+
+export const top5ThaiFood2025 = [
+  {
+    id: "top-1",
+    rank: 1,
+    name: "ผัดไทย",
+    englishName: "Pad Thai",
+    image: "/api/placeholder/350/200",
+    description: "หมี่ผัดไทยแท้ รสชาติกลมกล่อม หวาน เปรี้ยว เค็ม",
+    globalRating: 4.9,
+    countriesServed: 195,
+    yearlySearches: "89M",
+    culturalSignificance: "อาหารประจำชาติไทย"
+  },
+  {
+    id: "top-2", 
+    rank: 2,
+    name: "ต้มยำกุ้ง",
+    englishName: "Tom Yum Goong",
+    image: "/api/placeholder/350/200",
+    description: "แกงต้มยำรสเปรี้ยวเผ็ด กุ้งสด สมุนไพรไทย",
+    globalRating: 4.8,
+    countriesServed: 187,
+    yearlySearches: "76M", 
+    culturalSignificance: "ซุปไทยโลกรู้จัก"
+  },
+  {
+    id: "top-3",
+    rank: 3,
+    name: "แกงเขียวหวาน",
+    englishName: "Green Curry",
+    image: "/api/placeholder/350/200",
+    description: "แกงเขียวหวานไก่ กะทิเข้มข้น พริกเขียวหอม",
+    globalRating: 4.7,
+    countriesServed: 165,
+    yearlySearches: "52M",
+    culturalSignificance: "แกงไทยระดับโลก"
+  },
+  {
+    id: "top-4",
+    rank: 4, 
+    name: "มะม่วงข้าวเหนียว",
+    englishName: "Mango Sticky Rice",
+    image: "/api/placeholder/350/200",
+    description: "ขนมหวานไทยคลาสสิค มะม่วงหวานข้าวเหนียวเหนียว",
+    globalRating: 4.6,
+    countriesServed: 143,
+    yearlySearches: "34M",
+    culturalSignificance: "ขนมไทยขึ้นชื่อ"
+  },
+  {
+    id: "top-5",
+    rank: 5,
+    name: "ส้มตำ",
+    englishName: "Som Tam",
+    image: "/api/placeholder/350/200", 
+    description: "ส้มตำปูปลาร้า รสจัดจ้าน เปรี้ยว เผ็ด เค็ม หวาน",
+    globalRating: 4.5,
+    countriesServed: 128,
+    yearlySearches: "28M",
+    culturalSignificance: "วัฒนธรรมอีสาน"
+  }
+];
