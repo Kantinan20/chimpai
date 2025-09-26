@@ -1,0 +1,217 @@
+import { useState } from "react";
+import { User, Settings, Heart, BookOpen, Award, ChefHat, Edit2, Bell, Shield, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+
+const Profile = () => {
+  const [notifications, setNotifications] = useState(true);
+  const [privateProfile, setPrivateProfile] = useState(false);
+
+  const userStats = [
+    {
+      label: "สูตรที่บันทึก",
+      value: "24",
+      icon: BookOpen,
+      color: "text-primary"
+    },
+    {
+      label: "ร้านโปรด",
+      value: "12",
+      icon: Heart,
+      color: "text-secondary"
+    },
+    {
+      label: "เลเวลเชฟ",
+      value: "มือใหม่",
+      icon: ChefHat,
+      color: "text-thai-green"
+    },
+    {
+      label: "คะแนนรีวิว",
+      value: "4.8",
+      icon: Award,
+      color: "text-yellow-600"
+    }
+  ];
+
+  const flavorProfile = [
+    { name: "เผ็ด", level: 80, color: "bg-red-500" },
+    { name: "หวาน", level: 60, color: "bg-pink-500" },
+    { name: "เปรี้ยว", level: 70, color: "bg-yellow-500" },
+    { name: "เค็ม", level: 40, color: "bg-blue-500" },
+    { name: "หอม", level: 90, color: "bg-thai-green" }
+  ];
+
+  const menuItems = [
+    {
+      title: "แก้ไขโปรไฟล์",
+      subtitle: "เปลี่ยนรูปภาพ ชื่อ และข้อมูลส่วนตัว",
+      icon: Edit2,
+      action: () => console.log("Edit profile")
+    },
+    {
+      title: "การแจ้งเตือน",
+      subtitle: notifications ? "เปิดการแจ้งเตือน" : "ปิดการแจ้งเตือน",
+      icon: Bell,
+      isSwitch: true,
+      checked: notifications,
+      onChange: setNotifications
+    },
+    {
+      title: "ความเป็นส่วนตัว",
+      subtitle: privateProfile ? "โปรไฟล์ส่วนตัว" : "โปรไฟล์สาธารณะ",
+      icon: Shield,
+      isSwitch: true,
+      checked: privateProfile,
+      onChange: setPrivateProfile
+    },
+    {
+      title: "ตั้งค่า",
+      subtitle: "ภาษา, ธีม และการตั้งค่าอื่นๆ",
+      icon: Settings,
+      action: () => console.log("Settings")
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-background pb-20">
+      {/* Header */}
+      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+        <div className="container mx-auto px-4 py-4">
+          <h1 className="text-2xl font-bold text-primary">
+            โปรไฟล์
+          </h1>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-6 space-y-6">
+        {/* Profile Header */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center space-x-4">
+              <div className="h-16 w-16 bg-gradient-temple-gold rounded-full flex items-center justify-center">
+                <User className="h-8 w-8 text-primary-foreground" />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold text-foreground">
+                  คุณสมชาย ใจดี
+                </h2>
+                <p className="text-muted-foreground">นักสำรวจอาหารไทย</p>
+                <div className="flex items-center mt-2">
+                  <Badge variant="secondary" className="mr-2">
+                    <Award className="h-3 w-3 mr-1" />
+                    สมาชิกระดับเงิน
+                  </Badge>
+                  <Badge variant="outline">
+                    เข้าร่วม 6 เดือน
+                  </Badge>
+                </div>
+              </div>
+              <Button variant="outline" size="icon">
+                <Edit2 className="h-4 w-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 gap-4">
+          {userStats.map((stat, index) => (
+            <Card key={index}>
+              <CardContent className="pt-6">
+                <div className="flex items-center space-x-3">
+                  <div className={`${stat.color}`}>
+                    <stat.icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Flavor Profile */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <ChefHat className="h-5 w-5 text-primary" />
+              <span>โปรไฟล์รสชาติของคุณ</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {flavorProfile.map((flavor, index) => (
+              <div key={index} className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="font-medium">{flavor.name}</span>
+                  <span className="text-muted-foreground">{flavor.level}%</span>
+                </div>
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full ${flavor.color}`}
+                    style={{ width: `${flavor.level}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Menu Items */}
+        <Card>
+          <CardContent className="p-0">
+            {menuItems.map((item, index) => (
+              <div key={index}>
+                <div
+                  className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                  onClick={item.action}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="text-primary">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="font-medium">{item.title}</p>
+                      <p className="text-sm text-muted-foreground">{item.subtitle}</p>
+                    </div>
+                  </div>
+                  {item.isSwitch ? (
+                    <Switch
+                      checked={item.checked}
+                      onCheckedChange={item.onChange}
+                    />
+                  ) : (
+                    <div className="text-muted-foreground">
+                      <Edit2 className="h-4 w-4" />
+                    </div>
+                  )}
+                </div>
+                {index < menuItems.length - 1 && <Separator />}
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Logout */}
+        <Card>
+          <CardContent className="p-4">
+            <Button
+              variant="outline"
+              className="w-full justify-start text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              ออกจากระบบ
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
