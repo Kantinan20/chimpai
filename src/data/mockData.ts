@@ -161,38 +161,47 @@ export const recommendedRestaurants = [
   {
     id: "rest-1",
     name: "ร้านส้มตำนางรำ",
-    image: "/api/placeholder/400/250",
+    image: "https://images.unsplash.com/photo-1559843631-c2088fce96da?w=400&h=250&fit=crop",
     cuisine: "อาหารอีสาน",
     rating: 4.8,
     reviews: 1245,
     distance: "0.8 กม.",
     priceRange: "฿฿",
     specialDish: "ส้มตำไทย",
-    openUntil: "23:00"
+    openUntil: "23:00",
+    lat: 13.7563,
+    lng: 100.5018,
+    dishes: ["ส้มตำไทย", "ลาบหมู", "ไก่ย่าง"]
   },
   {
     id: "rest-2",
     name: "เฮือนแก้วเมืองเชียงใหม่",
-    image: "/api/placeholder/400/250", 
+    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=250&fit=crop", 
     cuisine: "อาหารเหนือ",
     rating: 4.9,
     reviews: 890,
     distance: "1.2 กม.",
     priceRange: "฿฿฿",
     specialDish: "ข้าวซอยไก่",
-    openUntil: "22:00"
+    openUntil: "22:00",
+    lat: 18.7883,
+    lng: 98.9853,
+    dishes: ["ข้าวซอยไก่", "แกงฮังเล", "น้ำพริกอ่อง"]
   },
   {
     id: "rest-3",
     name: "ครัวคุณยาย",
-    image: "/api/placeholder/400/250",
+    image: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=400&h=250&fit=crop",
     cuisine: "อาหารไทยโบราณ", 
     rating: 4.7,
     reviews: 2156,
     distance: "0.5 กม.",
     priceRange: "฿฿",
     specialDish: "แกงเขียวหวานไก่",
-    openUntil: "21:30"
+    openUntil: "21:30",
+    lat: 13.7563,
+    lng: 100.5018,
+    dishes: ["แกงเขียวหวาน", "ผัดไทย", "ต้มยำกุ้ง"]
   }
 ];
 

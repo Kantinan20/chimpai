@@ -133,8 +133,16 @@ const Index = () => {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {recommendedRestaurants.map((restaurant) => (
-              <div key={restaurant.id} className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-40 bg-gradient-to-r from-primary/20 to-primary/10"></div>
+              <div 
+                key={restaurant.id} 
+                className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank')}
+              >
+                <img 
+                  src={restaurant.image} 
+                  alt={restaurant.name}
+                  className="w-full h-40 object-cover"
+                />
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{restaurant.name}</h3>

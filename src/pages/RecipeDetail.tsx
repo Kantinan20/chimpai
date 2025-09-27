@@ -1,16 +1,35 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { featuredDishes } from "@/data/mockData";
-import { ArrowLeft, Clock, Users, Flame, Star, MapPin, Sparkles, Play } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { featuredDishes, recommendedRestaurants } from "@/data/mockData";
+import { ArrowLeft, Clock, Users, Flame, Star, MapPin, Sparkles, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 
 const RecipeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dish = featuredDishes.find(d => d.id === id);
+  const [checkedIngredients, setCheckedIngredients] = useState<string[]>([]);
+  const [showRestaurants, setShowRestaurants] = useState(false);
+
+  const handleIngredientCheck = (ingredient: string, checked: boolean) => {
+    if (checked) {
+      setCheckedIngredients([...checkedIngredients, ingredient]);
+    } else {
+      setCheckedIngredients(checkedIngredients.filter(i => i !== ingredient));
+    }
+  };
+
+  const allIngredientsChecked = dish && "ingredients" in dish ? 
+    checkedIngredients.length === dish.ingredients.length : false;
+
+  const filteredRestaurants = recommendedRestaurants.filter(restaurant => 
+    dish && restaurant.dishes.includes(dish.name)
+  );
 
   if (!dish) {
     return (
@@ -101,11 +120,11 @@ const RecipeDetail = () => {
               <p className="text-lg text-muted-foreground mb-4">{dish.description}</p>
               
               <div className="flex gap-3">
-                <Button variant="hero" size="lg">
-                  <Play className="h-4 w-4 mr-2" />
-                  เริ่มทำอาหาร AR
-                </Button>
-                <Button variant="cultural">
+                <Button 
+                  variant="cultural"
+                  onClick={() => setShowRestaurants(true)}
+                >
+                  <MapPin className="h-4 w-4 mr-2" />
                   หาร้านอาหาร
                 </Button>
               </div>
@@ -132,15 +151,38 @@ const RecipeDetail = () => {
                 <CardHeader>
                   <CardTitle>ส่วนผสม</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
                     {dish.ingredients.map((ingredient, index) => (
-                      <li key={index} className="flex items-center gap-2">
-                        <div className="h-2 w-2 rounded-full bg-primary" />
-                        <span>{ingredient}</span>
-                      </li>
+                      <div key={index} className="flex items-center gap-3">
+                        <Checkbox
+                          id={`ingredient-${index}`}
+                          checked={checkedIngredients.includes(ingredient)}
+                          onCheckedChange={(checked) => 
+                            handleIngredientCheck(ingredient, checked as boolean)
+                          }
+                        />
+                        <label 
+                          htmlFor={`ingredient-${index}`}
+                          className={`text-sm cursor-pointer ${
+                            checkedIngredients.includes(ingredient) 
+                              ? 'line-through text-muted-foreground' 
+                              : ''
+                          }`}
+                        >
+                          {ingredient}
+                        </label>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
+                  <Button 
+                    className="w-full" 
+                    disabled={!allIngredientsChecked}
+                    variant={allIngredientsChecked ? "default" : "secondary"}
+                  >
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    {allIngredientsChecked ? "เริ่มทำอาหาร" : `เตรียมส่วนผสม (${checkedIngredients.length}/${dish.ingredients.length})`}
+                  </Button>
                 </CardContent>
               </Card>
             )}
@@ -176,6 +218,53 @@ const RecipeDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Restaurant Finder Dialog */}
+      <Dialog open={showRestaurants} onOpenChange={setShowRestaurants}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-primary" />
+              ร้านอาหารที่มี{dish?.name}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {filteredRestaurants.length > 0 ? (
+              filteredRestaurants.map((restaurant) => (
+                <div 
+                  key={restaurant.id}
+                  className="flex items-center gap-3 p-3 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                  onClick={() => {
+                    window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank');
+                    setShowRestaurants(false);
+                  }}
+                >
+                  <img 
+                    src={restaurant.image} 
+                    alt={restaurant.name}
+                    className="w-12 h-12 rounded object-cover"
+                  />
+                  <div className="flex-1">
+                    <h3 className="font-medium">{restaurant.name}</h3>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <span>{restaurant.rating}</span>
+                      <span>•</span>
+                      <span>{restaurant.distance}</span>
+                    </div>
+                  </div>
+                  <Badge variant="outline">{restaurant.priceRange}</Badge>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <MapPin className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                <p>ไม่พบร้านอาหารที่มี{dish?.name}</p>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
