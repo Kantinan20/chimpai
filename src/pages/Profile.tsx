@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { User, Settings, Heart, BookOpen, Award, ChefHat, Edit2, Bell, Shield, LogOut } from "lucide-react";
+import { User, Settings, Heart, BookOpen, Award, ChefHat, Edit2, Bell, Shield, LogOut, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Profile = () => {
   const [notifications, setNotifications] = useState(true);
@@ -159,6 +160,19 @@ const Profile = () => {
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        {/* Theme Toggle */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Palette className="h-5 w-5 text-primary" />
+              <span>ธีมแอปพลิเคชัน</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ThemeToggle />
           </CardContent>
         </Card>
 

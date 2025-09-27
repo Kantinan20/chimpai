@@ -177,8 +177,12 @@ const RecipeDetail = () => {
                   </div>
                   <Button 
                     className="w-full" 
-                    disabled={!allIngredientsChecked}
                     variant={allIngredientsChecked ? "default" : "secondary"}
+                    onClick={() => {
+                      if (allIngredientsChecked) {
+                        console.log("เริ่มทำอาหาร");
+                      }
+                    }}
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
                     {allIngredientsChecked ? "เริ่มทำอาหาร" : `เตรียมส่วนผสม (${checkedIngredients.length}/${dish.ingredients.length})`}
