@@ -146,7 +146,7 @@ const Index = () => {
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{restaurant.name}</h3>
-                    <Badge variant="secondary" className="text-xs">{restaurant.priceRange}</Badge>
+                    <Badge variant="secondary" className="text-xs">{restaurant.averagePrice}</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mb-2">{restaurant.cuisine}</p>
                   <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
