@@ -1,6 +1,7 @@
 import padThaiImage from "@/assets/pad-thai.jpg";
 import tomYumImage from "@/assets/tom-yum.jpg";
 import greenCurryImage from "@/assets/green-curry.jpg";
+import somtamRestaurantImage from "@/assets/somtam-restaurant.jpg";
 
 export const featuredDishes = [
   {
@@ -161,7 +162,7 @@ export const recommendedRestaurants = [
   {
     id: "rest-1",
     name: "ร้านส้มตำนางรำ",
-    image: "https://images.unsplash.com/photo-1559843631-c2088fce96da?w=400&h=250&fit=crop",
+    image: somtamRestaurantImage,
     cuisine: "อาหารอีสาน",
     rating: 4.8,
     reviews: 1245,

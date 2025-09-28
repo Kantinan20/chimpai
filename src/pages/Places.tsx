@@ -4,51 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { recommendedRestaurants } from "@/data/mockData";
 
 const Places = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const restaurants = [
-    {
-      id: "1",
-      name: "ร้านอาหารไทยต้นตำรับ",
-      rating: 4.8,
-      distance: "0.5 กม.",
-      cuisine: "อาหารไทยแท้",
-      price: "฿฿฿",
-      image: "/api/placeholder/300/200",
-      address: "123 ถนนสุขุมวิท กรุงเทพฯ",
-      phone: "02-123-4567",
-      openHours: "10:00 - 22:00",
-      specialties: ["ผัดไทย", "ต้มยำกุ้ง", "แกงเขียวหวาน"]
-    },
-    {
-      id: "2", 
-      name: "ครัวเรือนไทย",
-      rating: 4.6,
-      distance: "1.2 กม.",
-      cuisine: "อาหารบ้าน",
-      price: "฿฿",
-      image: "/api/placeholder/300/200",
-      address: "456 ซอยสุขุมวิท 21 กรุงเทพฯ",
-      phone: "02-234-5678",
-      openHours: "11:00 - 21:00",
-      specialties: ["ข้าวผัด", "ลาบหมู", "ส้มตำ"]
-    },
-    {
-      id: "3",
-      name: "ตลาดน้ำดำเนินสะดวก",
-      rating: 4.9,
-      distance: "15 กม.",
-      cuisine: "ตลาดน้ำ",
-      price: "฿",
-      image: "/api/placeholder/300/200",
-      address: "ดำเนินสะดวก ราชบุรี",
-      phone: "032-254-179",
-      openHours: "06:00 - 18:00",
-      specialties: ["ก๋วยเตี้ยวเรือ", "ขนมไทย", "ผลไม้สด"]
-    }
-  ];
+  const restaurants = recommendedRestaurants.map(restaurant => ({
+    id: restaurant.id,
+    name: restaurant.name,
+    rating: restaurant.rating,
+    distance: restaurant.distance,
+    cuisine: restaurant.cuisine,
+    price: restaurant.priceRange,
+    image: restaurant.image,
+    address: `${restaurant.distance} • ${restaurant.cuisine}`,
+    phone: "02-123-4567",
+    openHours: restaurant.openUntil,
+    specialties: restaurant.dishes.slice(0, 3)
+  }));
 
   const filteredRestaurants = restaurants.filter(restaurant =>
     restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -100,10 +73,12 @@ const Places = () => {
               <CardContent className="p-0">
                 <div className="flex">
                   {/* Image */}
-                  <div className="w-24 h-24 bg-muted flex-shrink-0">
-                    <div className="w-full h-full bg-gradient-cultural rounded-l-lg flex items-center justify-center">
-                      <MapPin className="h-8 w-8 text-primary" />
-                    </div>
+                  <div className="w-24 h-24 bg-muted flex-shrink-0 overflow-hidden rounded-l-lg">
+                    <img 
+                      src={restaurant.image} 
+                      alt={restaurant.name}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   
                   {/* Content */}
