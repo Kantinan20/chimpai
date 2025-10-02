@@ -9,11 +9,13 @@ import { Badge } from "@/components/ui/badge";
 import { featuredDishes, trendingFoodsToday, recommendedRestaurants, top5ThaiFood2025 } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 import thaiHeroImage from "@/assets/thai-hero.jpg";
-import { TrendingUp, MapPin, Users, Star, Clock, Trophy, Globe } from "lucide-react";
+import { TrendingUp, MapPin, Users, Star, Clock, Trophy, Globe, Bookmark } from "lucide-react";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [userPreferences, setUserPreferences] = useState<string[]>([]);
+  const [savedDishes, setSavedDishes] = useState<string[]>([]);
+  const [savedRestaurants, setSavedRestaurants] = useState<string[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -27,6 +29,40 @@ const Index = () => {
 
   const handleDishClick = (dishId: string) => {
     navigate(`/recipe/${dishId}`);
+  };
+
+  const handleSaveDish = (dishId: string, dishName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (savedDishes.includes(dishId)) {
+      setSavedDishes(savedDishes.filter(id => id !== dishId));
+      toast({
+        title: "ยกเลิกการบันทึก",
+        description: `ลบ ${dishName} ออกจากรายการบันทึกแล้ว`,
+      });
+    } else {
+      setSavedDishes([...savedDishes, dishId]);
+      toast({
+        title: "บันทึกสูตรอาหาร! 🍽️",
+        description: `บันทึก ${dishName} แล้ว`,
+      });
+    }
+  };
+
+  const handleSaveRestaurant = (restaurantId: string, restaurantName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (savedRestaurants.includes(restaurantId)) {
+      setSavedRestaurants(savedRestaurants.filter(id => id !== restaurantId));
+      toast({
+        title: "ยกเลิกการบันทึก",
+        description: `ลบ ${restaurantName} ออกจากรายการบันทึกแล้ว`,
+      });
+    } else {
+      setSavedRestaurants([...savedRestaurants, restaurantId]);
+      toast({
+        title: "บันทึกร้านอาหาร! 🏪",
+        description: `บันทึก ${restaurantName} แล้ว`,
+      });
+    }
   };
 
   return (
@@ -135,7 +171,7 @@ const Index = () => {
             {recommendedRestaurants.map((restaurant) => (
               <div 
                 key={restaurant.id} 
-                className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
                 onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank')}
               >
                 <img 
@@ -143,6 +179,14 @@ const Index = () => {
                   alt={restaurant.name}
                   className="w-full h-40 object-cover"
                 />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background"
+                  onClick={(e) => handleSaveRestaurant(restaurant.id, restaurant.name, e)}
+                >
+                  <Bookmark className={`h-5 w-5 ${savedRestaurants.includes(restaurant.id) ? 'fill-primary text-primary' : ''}`} />
+                </Button>
                 <div className="p-4">
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="font-semibold">{restaurant.name}</h3>
@@ -225,11 +269,20 @@ const Index = () => {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredDishes.map((dish) => (
-              <DishCard 
-                key={dish.id} 
-                dish={dish} 
-                onClick={() => handleDishClick(dish.id)}
-              />
+              <div key={dish.id} className="relative">
+                <DishCard 
+                  dish={dish} 
+                  onClick={() => handleDishClick(dish.id)}
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm hover:bg-background z-10"
+                  onClick={(e) => handleSaveDish(dish.id, dish.name, e)}
+                >
+                  <Bookmark className={`h-5 w-5 ${savedDishes.includes(dish.id) ? 'fill-primary text-primary' : ''}`} />
+                </Button>
+              </div>
             ))}
           </div>
         </section>
