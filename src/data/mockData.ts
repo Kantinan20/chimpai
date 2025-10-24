@@ -2,6 +2,12 @@ import padThaiImage from "@/assets/pad-thai.jpg";
 import tomYumImage from "@/assets/tom-yum.jpg";
 import greenCurryImage from "@/assets/green-curry.jpg";
 import somtamRestaurantImage from "@/assets/somtam-restaurant.jpg";
+import northernThaiRestaurantImage from "@/assets/northern-thai-restaurant.jpg";
+import traditionalThaiRestaurantImage from "@/assets/traditional-thai-restaurant.jpg";
+import riversideThaiRestaurantImage from "@/assets/riverside-thai-restaurant.jpg";
+import southernThaiRestaurantImage from "@/assets/southern-thai-restaurant.jpg";
+import boatNoodleRestaurantImage from "@/assets/boat-noodle-restaurant.jpg";
+import chickenRiceRestaurantImage from "@/assets/chicken-rice-restaurant.jpg";
 
 export const featuredDishes = [
   {
@@ -178,7 +184,7 @@ export const recommendedRestaurants = [
   {
     id: "rest-2",
     name: "เฮือนแก้วเมืองเชียงใหม่",
-    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=250&fit=crop", 
+    image: northernThaiRestaurantImage, 
     cuisine: "อาหารเหนือ",
     rating: 4.9,
     reviews: 890,
@@ -194,8 +200,8 @@ export const recommendedRestaurants = [
   {
     id: "rest-3",
     name: "ครัวคุณยาย",
-    image: "https://images.unsplash.com/photo-1594007654729-407eedc4be65?w=400&h=250&fit=crop",
-    cuisine: "อาหารไทยโบราณ", 
+    image: traditionalThaiRestaurantImage,
+    cuisine: "อาหารไทยโบราณ",
     rating: 4.7,
     reviews: 2156,
     distance: "0.5 กม.",
@@ -210,7 +216,7 @@ export const recommendedRestaurants = [
   {
     id: "rest-4",
     name: "บ้านไทยริมน้ำ",
-    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=250&fit=crop",
+    image: riversideThaiRestaurantImage,
     cuisine: "อาหารไทยริมแม่น้ำ",
     rating: 4.9,
     reviews: 3421,
@@ -226,7 +232,7 @@ export const recommendedRestaurants = [
   {
     id: "rest-5",
     name: "อิ่มใจอาหารใต้",
-    image: "https://images.unsplash.com/photo-1606787619173-ec7bddc29a0b?w=400&h=250&fit=crop",
+    image: southernThaiRestaurantImage,
     cuisine: "อาหารใต้",
     rating: 4.6,
     reviews: 876,
@@ -258,7 +264,7 @@ export const recommendedRestaurants = [
   {
     id: "rest-7",
     name: "ป้าแดงก๋วยเตี๋ยวเรือ",
-    image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&h=250&fit=crop",
+    image: boatNoodleRestaurantImage,
     cuisine: "ก๋วยเตี๋ยว",
     rating: 4.8,
     reviews: 2341,
@@ -290,7 +296,7 @@ export const recommendedRestaurants = [
   {
     id: "rest-9",
     name: "เจ้าเด็ดข้าวมันไก่",
-    image: "https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=400&h=250&fit=crop",
+    image: chickenRiceRestaurantImage,
     cuisine: "ข้าวมันไก่",
     rating: 4.9,
     reviews: 5678,

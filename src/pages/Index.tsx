@@ -6,6 +6,13 @@ import DishCard from "@/components/DishCard";
 import OnboardingModal from "@/components/OnboardingModal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { featuredDishes, trendingFoodsToday, recommendedRestaurants, top5ThaiFood2025 } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 import thaiHeroImage from "@/assets/thai-hero.jpg";
@@ -165,53 +172,64 @@ const Index = () => {
               <MapPin className="h-6 w-6 text-primary" />
               ร้านอาหารแนะนำ
             </h2>
-            <Button variant="outline">ดูทั้งหมด</Button>
+            <Button variant="outline" onClick={() => navigate('/places')}>ดูทั้งหมด</Button>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {recommendedRestaurants.map((restaurant) => (
-              <div 
-                key={restaurant.id} 
-                className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative"
-                onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank')}
-              >
-                <img 
-                  src={restaurant.image} 
-                  alt={restaurant.name}
-                  className="w-full h-40 object-cover"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background"
-                  onClick={(e) => handleSaveRestaurant(restaurant.id, restaurant.name, e)}
-                >
-                  <Bookmark className={`h-5 w-5 ${savedRestaurants.includes(restaurant.id) ? 'fill-primary text-primary' : ''}`} />
-                </Button>
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold">{restaurant.name}</h3>
-                    <Badge variant="secondary" className="text-xs">{restaurant.averagePrice}</Badge>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {recommendedRestaurants.map((restaurant) => (
+                <CarouselItem key={restaurant.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                  <div 
+                    className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative h-full"
+                    onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank')}
+                  >
+                    <img 
+                      src={restaurant.image} 
+                      alt={restaurant.name}
+                      className="w-full h-48 object-cover"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background"
+                      onClick={(e) => handleSaveRestaurant(restaurant.id, restaurant.name, e)}
+                    >
+                      <Bookmark className={`h-5 w-5 ${savedRestaurants.includes(restaurant.id) ? 'fill-primary text-primary' : ''}`} />
+                    </Button>
+                    <div className="p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold">{restaurant.name}</h3>
+                        <Badge variant="secondary" className="text-xs">{restaurant.averagePrice}</Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-2">{restaurant.cuisine}</p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
+                        <div className="flex items-center gap-1">
+                          <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                          <span>{restaurant.rating}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <MapPin className="h-4 w-4" />
+                          <span>{restaurant.distance}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          <span>{restaurant.openUntil}</span>
+                        </div>
+                      </div>
+                      <p className="text-sm"><span className="font-medium">เมนูเด่น:</span> {restaurant.specialDish}</p>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-2">{restaurant.cuisine}</p>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mb-2">
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span>{restaurant.rating}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <MapPin className="h-4 w-4" />
-                      <span>{restaurant.distance}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{restaurant.openUntil}</span>
-                    </div>
-                  </div>
-                  <p className="text-sm"><span className="font-medium">เมนูเด่น:</span> {restaurant.specialDish}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
         </section>
 
         {/* Top 5 Thai Foods 2025 */}
