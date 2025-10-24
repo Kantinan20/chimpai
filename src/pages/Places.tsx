@@ -8,6 +8,7 @@ import { recommendedRestaurants } from "@/data/mockData";
 
 const Places = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string>("nearest");
 
   const restaurants = recommendedRestaurants.map(restaurant => ({
     id: restaurant.id,
@@ -23,10 +24,29 @@ const Places = () => {
     specialties: restaurant.dishes.slice(0, 3)
   }));
 
-  const filteredRestaurants = restaurants.filter(restaurant =>
-    restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredRestaurants = restaurants
+    .filter(restaurant =>
+      restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      switch (activeFilter) {
+        case "nearest":
+          return parseFloat(a.distance) - parseFloat(b.distance);
+        case "top-rated":
+          return b.rating - a.rating;
+        case "affordable":
+          return a.price.length - b.price.length;
+        case "open":
+          // Parse time and check if open (simplified)
+          const getHour = (time: string) => parseInt(time.split(":")[0]);
+          const aHour = getHour(a.openHours);
+          const bHour = getHour(b.openHours);
+          return bHour - aHour; // Later closing time first
+        default:
+          return 0;
+      }
+    });
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -52,17 +72,33 @@ const Places = () => {
       <div className="container mx-auto px-4 py-6">
         {/* Quick Filters */}
         <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          <Badge variant="secondary" className="whitespace-nowrap">
+          <Badge 
+            variant={activeFilter === "nearest" ? "default" : "outline"}
+            className="whitespace-nowrap cursor-pointer transition-all hover:bg-primary/10"
+            onClick={() => setActiveFilter("nearest")}
+          >
             ใกล้ที่สุด
           </Badge>
-          <Badge variant="outline" className="whitespace-nowrap">
+          <Badge 
+            variant={activeFilter === "top-rated" ? "default" : "outline"}
+            className="whitespace-nowrap cursor-pointer transition-all hover:bg-primary/10"
+            onClick={() => setActiveFilter("top-rated")}
+          >
             คะแนนสูง
           </Badge>
-          <Badge variant="outline" className="whitespace-nowrap">
+          <Badge 
+            variant={activeFilter === "affordable" ? "default" : "outline"}
+            className="whitespace-nowrap cursor-pointer transition-all hover:bg-primary/10"
+            onClick={() => setActiveFilter("affordable")}
+          >
             ราคาประหยัด
           </Badge>
-          <Badge variant="outline" className="whitespace-nowrap">
-            เปิดอยู่
+          <Badge 
+            variant={activeFilter === "open" ? "default" : "outline"}
+            className="whitespace-nowrap cursor-pointer transition-all hover:bg-primary/10"
+            onClick={() => setActiveFilter("open")}
+          >
+            เปิดดึก
           </Badge>
         </div>
 

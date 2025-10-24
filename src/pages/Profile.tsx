@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Settings, Heart, BookOpen, Award, ChefHat, Edit2, Bell, Shield, LogOut, Palette } from "lucide-react";
+import { User, Settings, Heart, BookOpen, Award, ChefHat, Edit2, Bell, Shield, LogOut, Palette, UserCircle, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,15 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 const Profile = () => {
   const [notifications, setNotifications] = useState(true);
   const [privateProfile, setPrivateProfile] = useState(false);
+  const [personalInfoVisible, setPersonalInfoVisible] = useState(true);
+
+  // Mock personal information (would come from onboarding)
+  const personalInfo = {
+    gender: "ชาย",
+    age: 28,
+    chronicDiseases: ["ไม่มี"],
+    foodAllergies: ["ไม่มี"]
+  };
 
   const userStats = [
     {
@@ -136,6 +145,62 @@ const Profile = () => {
             </Card>
           ))}
         </div>
+
+        {/* Personal Information */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center space-x-2">
+                <UserCircle className="h-5 w-5 text-primary" />
+                <span>ข้อมูลส่วนตัว</span>
+              </CardTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setPersonalInfoVisible(!personalInfoVisible)}
+                className="flex items-center gap-2"
+              >
+                {personalInfoVisible ? (
+                  <>
+                    <Eye className="h-4 w-4" />
+                    <span className="text-xs">แสดงต่อผู้อื่น</span>
+                  </>
+                ) : (
+                  <>
+                    <EyeOff className="h-4 w-4" />
+                    <span className="text-xs">ซ่อนจากผู้อื่น</span>
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex justify-between items-center py-2 border-b border-border">
+              <span className="text-sm text-muted-foreground">เพศ</span>
+              <span className="font-medium">{personalInfo.gender}</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-border">
+              <span className="text-sm text-muted-foreground">อายุ</span>
+              <span className="font-medium">{personalInfo.age} ปี</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-border">
+              <span className="text-sm text-muted-foreground">โรคประจำตัว</span>
+              <span className="font-medium">{personalInfo.chronicDiseases.join(", ")}</span>
+            </div>
+            <div className="flex justify-between items-center py-2">
+              <span className="text-sm text-muted-foreground">อาหารที่แพ้</span>
+              <span className="font-medium">{personalInfo.foodAllergies.join(", ")}</span>
+            </div>
+            {!personalInfoVisible && (
+              <div className="bg-muted/50 rounded-lg p-3 mt-2">
+                <p className="text-xs text-muted-foreground flex items-center gap-2">
+                  <Shield className="h-3 w-3" />
+                  ข้อมูลนี้จะไม่แสดงต่อผู้ใช้คนอื่น
+                </p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Flavor Profile */}
         <Card>
