@@ -6,18 +6,61 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
+  const { toast } = useToast();
   const [notifications, setNotifications] = useState(true);
   const [privateProfile, setPrivateProfile] = useState(false);
   const [personalInfoVisible, setPersonalInfoVisible] = useState(true);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  // Mock personal information (would come from onboarding)
-  const personalInfo = {
+  // Profile state
+  const [userName, setUserName] = useState("คุณสมชาย ใจดี");
+  const [personalInfo, setPersonalInfo] = useState({
     gender: "ชาย",
     age: 28,
     chronicDiseases: ["ไม่มี"],
     foodAllergies: ["ไม่มี"]
+  });
+
+  // Edit form state
+  const [editForm, setEditForm] = useState({
+    name: userName,
+    gender: personalInfo.gender,
+    age: personalInfo.age.toString(),
+    chronicDiseases: personalInfo.chronicDiseases.join(", "),
+    foodAllergies: personalInfo.foodAllergies.join(", ")
+  });
+
+  const handleEditProfile = () => {
+    setEditForm({
+      name: userName,
+      gender: personalInfo.gender,
+      age: personalInfo.age.toString(),
+      chronicDiseases: personalInfo.chronicDiseases.join(", "),
+      foodAllergies: personalInfo.foodAllergies.join(", ")
+    });
+    setIsEditDialogOpen(true);
+  };
+
+  const handleSaveProfile = () => {
+    setUserName(editForm.name);
+    setPersonalInfo({
+      gender: editForm.gender,
+      age: parseInt(editForm.age) || 0,
+      chronicDiseases: editForm.chronicDiseases.split(",").map(d => d.trim()).filter(d => d),
+      foodAllergies: editForm.foodAllergies.split(",").map(a => a.trim()).filter(a => a)
+    });
+    setIsEditDialogOpen(false);
+    toast({
+      title: "บันทึกสำเร็จ",
+      description: "ข้อมูลโปรไฟล์ของคุณได้รับการอัปเดตแล้ว",
+    });
   };
 
   const userStats = [
@@ -60,7 +103,7 @@ const Profile = () => {
       title: "แก้ไขโปรไฟล์",
       subtitle: "เปลี่ยนรูปภาพ ชื่อ และข้อมูลส่วนตัว",
       icon: Edit2,
-      action: () => console.log("Edit profile")
+      action: handleEditProfile
     },
     {
       title: "การแจ้งเตือน",
@@ -107,7 +150,7 @@ const Profile = () => {
               </div>
               <div className="flex-1">
                 <h2 className="text-xl font-bold text-foreground">
-                  คุณสมชาย ใจดี
+                  {userName}
                 </h2>
                 <p className="text-muted-foreground">นักสำรวจอาหารไทย</p>
                 <div className="flex items-center mt-2">
@@ -120,7 +163,7 @@ const Profile = () => {
                   </Badge>
                 </div>
               </div>
-              <Button variant="outline" size="icon">
+              <Button variant="outline" size="icon" onClick={handleEditProfile}>
                 <Edit2 className="h-4 w-4" />
               </Button>
             </div>
@@ -154,24 +197,33 @@ const Profile = () => {
                 <UserCircle className="h-5 w-5 text-primary" />
                 <span>ข้อมูลส่วนตัว</span>
               </CardTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setPersonalInfoVisible(!personalInfoVisible)}
-                className="flex items-center gap-2"
-              >
-                {personalInfoVisible ? (
-                  <>
-                    <Eye className="h-4 w-4" />
-                    <span className="text-xs">แสดงต่อผู้อื่น</span>
-                  </>
-                ) : (
-                  <>
-                    <EyeOff className="h-4 w-4" />
-                    <span className="text-xs">ซ่อนจากผู้อื่น</span>
-                  </>
-                )}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleEditProfile}
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setPersonalInfoVisible(!personalInfoVisible)}
+                  className="flex items-center gap-2"
+                >
+                  {personalInfoVisible ? (
+                    <>
+                      <Eye className="h-4 w-4" />
+                      <span className="text-xs">แสดงต่อผู้อื่น</span>
+                    </>
+                  ) : (
+                    <>
+                      <EyeOff className="h-4 w-4" />
+                      <span className="text-xs">ซ่อนจากผู้อื่น</span>
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -288,6 +340,48 @@ const Profile = () => {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Edit Profile Dialog */}
+        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>แก้ไขข้อมูลส่วนตัว</DialogTitle>
+              <DialogDescription>อัปเดตข้อมูลโปรไฟล์ของคุณ</DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">ชื่อ-นามสกุล</Label>
+                <Input id="name" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} placeholder="กรอกชื่อ-นามสกุล" />
+              </div>
+              <div className="space-y-2">
+                <Label>เพศ</Label>
+                <RadioGroup value={editForm.gender} onValueChange={(value) => setEditForm({ ...editForm, gender: value })}>
+                  <div className="flex items-center space-x-2"><RadioGroupItem value="ชาย" id="male" /><Label htmlFor="male">ชาย</Label></div>
+                  <div className="flex items-center space-x-2"><RadioGroupItem value="หญิง" id="female" /><Label htmlFor="female">หญิง</Label></div>
+                  <div className="flex items-center space-x-2"><RadioGroupItem value="อื่นๆ" id="other" /><Label htmlFor="other">อื่นๆ</Label></div>
+                </RadioGroup>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="age">อายุ</Label>
+                <Input id="age" type="number" value={editForm.age} onChange={(e) => setEditForm({ ...editForm, age: e.target.value })} placeholder="กรอกอายุ" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="chronic">โรคประจำตัว</Label>
+                <Input id="chronic" value={editForm.chronicDiseases} onChange={(e) => setEditForm({ ...editForm, chronicDiseases: e.target.value })} placeholder="เช่น เบาหวาน, ความดันโลหิตสูง (คั่นด้วยจุลภาค)" />
+                <p className="text-xs text-muted-foreground">หากไม่มีให้ใส่ "ไม่มี"</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="allergies">อาหารที่แพ้</Label>
+                <Input id="allergies" value={editForm.foodAllergies} onChange={(e) => setEditForm({ ...editForm, foodAllergies: e.target.value })} placeholder="เช่น ทะเล, ถั่ว, นม (คั่นด้วยจุลภาค)" />
+                <p className="text-xs text-muted-foreground">หากไม่มีให้ใส่ "ไม่มี"</p>
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>ยกเลิก</Button>
+              <Button onClick={handleSaveProfile}>บันทึก</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
