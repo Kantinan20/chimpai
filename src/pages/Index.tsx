@@ -6,6 +6,7 @@ import DishCard from "@/components/DishCard";
 import OnboardingModal from "@/components/OnboardingModal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -13,10 +14,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { featuredDishes, trendingFoodsToday, recommendedRestaurants, top5ThaiFood2025 } from "@/data/mockData";
+import { featuredDishes, trendingFoodsToday, recommendedRestaurants, top5ThaiFood2025, promotionalAds, coupons } from "@/data/mockData";
 import { useToast } from "@/hooks/use-toast";
 import thaiHeroImage from "@/assets/thai-hero.jpg";
-import { TrendingUp, MapPin, Users, Star, Clock, Trophy, Globe, Bookmark } from "lucide-react";
+import { TrendingUp, MapPin, Users, Star, Clock, Trophy, Globe, Bookmark, Ticket, Tag, ExternalLink } from "lucide-react";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -107,6 +108,45 @@ const Index = () => {
       </section>
 
       <div className="container mx-auto px-4 py-8 space-y-12">
+        {/* Promotional Ads Section */}
+        <section>
+          <Carousel
+            opts={{
+              align: "center",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent>
+              {promotionalAds.map((ad) => (
+                <CarouselItem key={ad.id}>
+                  <div 
+                    className="relative overflow-hidden rounded-xl shadow-lg cursor-pointer group"
+                    onClick={() => window.open(ad.link, '_blank')}
+                  >
+                    <img 
+                      src={ad.image} 
+                      alt={ad.title}
+                      className="w-full h-48 md:h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <Badge className="mb-2 bg-primary">{ad.badge}</Badge>
+                      <h3 className="text-2xl font-bold mb-2">{ad.title}</h3>
+                      <p className="text-white/90 mb-3">{ad.description}</p>
+                      <Button variant="secondary" size="sm">
+                        ดูรายละเอียด <ExternalLink className="h-4 w-4 ml-2" />
+                      </Button>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+        </section>
+
         {/* Flavor DNA Section */}
         {userPreferences.length === 0 && (
           <section>
@@ -134,6 +174,40 @@ const Index = () => {
                     onClick={() => handleDishClick(dish.id)}
                   />
                 ))}
+            </div>
+          </section>
+        )}
+
+        {/* Coupons & Discounts Section */}
+        {userPreferences.length > 0 && (
+          <section className="bg-gradient-cultural rounded-xl p-8 border-2 border-primary/20">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold flex items-center gap-2">
+                <Ticket className="h-6 w-6 text-primary" />
+                คูปองและส่วนลดสำหรับคุณ
+              </h2>
+              <Badge variant="destructive" className="animate-pulse">โปรโมชั่นพิเศษ</Badge>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {coupons.map((coupon) => (
+                <Card key={coupon.id} className="border-2 border-dashed border-primary/30 hover:border-primary hover:shadow-lg transition-all">
+                  <CardContent className="p-4">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-primary/10 p-3 rounded-lg">
+                        <Tag className="h-6 w-6 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold mb-1">{coupon.title}</h3>
+                        <p className="text-sm text-muted-foreground mb-2">{coupon.description}</p>
+                        <div className="flex items-center justify-between">
+                          <Badge variant="secondary" className="text-xs">{coupon.validUntil}</Badge>
+                          <Button size="sm" variant="outline">ใช้เลย</Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </section>
         )}
@@ -186,7 +260,7 @@ const Index = () => {
                 <CarouselItem key={restaurant.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                   <div 
                     className="bg-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer relative h-full"
-                    onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank')}
+                    onClick={() => navigate(`/restaurant/${restaurant.id}`)}
                   >
                     <img 
                       src={restaurant.image} 

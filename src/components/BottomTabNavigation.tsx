@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, MapPin, Bot, User } from "lucide-react";
+import { Home, MapPin, Bot, User, ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const BottomTabNavigation = () => {
@@ -18,6 +18,12 @@ const BottomTabNavigation = () => {
       label: "สถานที่",
       icon: MapPin,
       path: "/places",
+    },
+    {
+      id: "order",
+      label: "สั่งซื้อ",
+      icon: ShoppingCart,
+      path: "/order-ingredients",
     },
     {
       id: "ai-chef",

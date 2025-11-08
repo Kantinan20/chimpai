@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { MapPin, Star, Clock, Phone, Navigation } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { recommendedRestaurants } from "@/data/mockData";
 
 const Places = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState<string>("nearest");
 
@@ -105,7 +107,11 @@ const Places = () => {
         {/* Restaurant List */}
         <div className="space-y-4">
           {filteredRestaurants.map((restaurant) => (
-            <Card key={restaurant.id} className="overflow-hidden">
+            <Card 
+              key={restaurant.id} 
+              className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+              onClick={() => navigate(`/restaurant/${restaurant.id}`)}
+            >
               <CardContent className="p-0">
                 <div className="flex">
                   {/* Image */}

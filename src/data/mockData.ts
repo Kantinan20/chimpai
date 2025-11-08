@@ -327,6 +327,60 @@ export const recommendedRestaurants = [
   }
 ];
 
+export const promotionalAds = [
+  {
+    id: "ad-1",
+    title: "เทศกาลอาหารไทยประจำปี 2025",
+    description: "ร่วมลิ้มรสอาหารไทยรสเลิศจากร้านดังทั่วกรุงเทพฯ ส่วนลดสูงสุด 30%",
+    image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=1200&h=400&fit=crop",
+    badge: "กิจกรรมพิเศษ",
+    link: "https://example.com/thai-food-festival"
+  },
+  {
+    id: "ad-2",
+    title: "ลดราคาพิเศษกับ Chimpai",
+    description: "จองผ่าน AI Chef รับคูปองส่วนลดเพิ่ม 15% ทันที",
+    image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&h=400&fit=crop",
+    badge: "โปรโมชั่น",
+    link: "/ai-chef"
+  },
+  {
+    id: "ad-3",
+    title: "ร้านอาหารไทยใหม่เปิดแล้ว",
+    description: "ครัวคุณยายสาขาใหม่ ขนอาหารไทยโบราณมาให้ลิ้มลอง",
+    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=400&fit=crop",
+    badge: "ร้านใหม่",
+    link: "/places"
+  }
+];
+
+export const coupons = [
+  {
+    id: "coupon-1",
+    title: "ลด 10% ร้านอาหารไทยรสชาติแท้",
+    description: "สำหรับการสั่งอาหารครั้งแรก",
+    discount: "10%",
+    validUntil: "ใช้ได้ถึง 31 ธ.ค. 2025",
+    code: "THAI10"
+  },
+  {
+    id: "coupon-2",
+    title: "ส่วนลด 50 บาท ร้านอาหารเหนือ",
+    description: "เมื่อสั่งอาหารครบ 300 บาท",
+    discount: "50฿",
+    validUntil: "ใช้ได้ถึง 30 มิ.ย. 2025",
+    code: "NORTH50"
+  },
+  {
+    id: "coupon-3",
+    title: "ฟรีเครื่องดื่ม",
+    description: "เมื่อสั่งอาหารครบ 200 บาท",
+    discount: "ฟรี",
+    validUntil: "ใช้ได้ถึง 15 พ.ค. 2025",
+    code: "FREEDRINK"
+  }
+];
+
 export const top5ThaiFood2025 = [
   {
     id: "top-1",
