@@ -1,30 +1,27 @@
 import { useState } from "react";
-import { User, Settings, Heart, BookOpen, Award, ChefHat, Edit2, Bell, Shield, LogOut, Palette, UserCircle, Eye, EyeOff, Crown, HelpCircle, Sparkles, Check, ChevronDown } from "lucide-react";
+import { User, Heart, BookOpen, Award, ChefHat, Edit2, Crown, ChevronDown, Check, Sparkles, MessageSquare, Camera, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { ThemeToggle } from "@/components/ThemeToggle";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
+import { Progress } from "@/components/ui/progress";
+import chimpaiLogo from "@/assets/chimpai-logo.png";
 
 const Profile = () => {
   const { toast } = useToast();
-  const [notifications, setNotifications] = useState(true);
-  const [privateProfile, setPrivateProfile] = useState(false);
-  const [personalInfoVisible, setPersonalInfoVisible] = useState(true);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isSubscriptionDialogOpen, setIsSubscriptionDialogOpen] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<"free" | "basic" | "plus" | "pro">("free");
-  const [isPremiumMode, setIsPremiumMode] = useState(false);
+  const [demoMode, setDemoMode] = useState<"free" | "basic" | "plus" | "pro">("free");
 
   // Profile state
   const [userName, setUserName] = useState("คุณสมชาย ใจดี");
+  const [userAvatar, setUserAvatar] = useState("");
   const [personalInfo, setPersonalInfo] = useState({
     gender: "ชาย",
     age: 28,
@@ -40,6 +37,11 @@ const Profile = () => {
     chronicDiseases: personalInfo.chronicDiseases.join(", "),
     foodAllergies: personalInfo.foodAllergies.join(", ")
   });
+
+  // Chatbot quota for free users
+  const [chatbotUsage, setChatbotUsage] = useState(15); // Used 15 out of 30
+  const maxChatbots = 30;
+  const chatbotPercentage = (chatbotUsage / maxChatbots) * 100;
 
   const handleEditProfile = () => {
     setEditForm({
@@ -69,12 +71,19 @@ const Profile = () => {
 
   const handleUpgradePlan = (plan: "basic" | "plus" | "pro") => {
     setCurrentPlan(plan);
-    setIsPremiumMode(true);
-    setIsSubscriptionDialogOpen(false);
+    setDemoMode(plan);
     toast({
       title: "อัปเกรดสำเร็จ! 🎉",
-      description: `คุณได้อัปเกรดเป็น ${plan === "basic" ? "Basic" : plan === "plus" ? "Plus" : "Pro"} แล้ว`,
+      description: `คุณได้อัปเกรดเป็นแผน ${plan === "basic" ? "Basic" : plan === "plus" ? "Plus" : "Pro"} แล้ว`,
     });
+  };
+
+  const getPlanLabel = () => {
+    if (demoMode === "free") return "Free";
+    if (demoMode === "basic") return "Basic";
+    if (demoMode === "plus") return "Plus";
+    if (demoMode === "pro") return "Pro";
+    return "Free";
   };
 
   const subscriptionPlans = [
@@ -88,7 +97,9 @@ const Profile = () => {
         "เข้าถึงสูตรอาหารพื้นฐาน",
         "รับการแจ้งเตือนพิเศษ"
       ],
-      color: "from-slate-600 to-slate-800"
+      gradient: "from-slate-100 to-slate-200",
+      borderColor: "border-slate-300",
+      textColor: "text-slate-800"
     },
     {
       id: "plus",
@@ -101,7 +112,9 @@ const Profile = () => {
         "ระบบวางแผนมื้ออาหารอัจฉริยะ",
         "ฟีเจอร์ทั้งหมดของ Basic"
       ],
-      color: "from-primary to-thai-green",
+      gradient: "from-primary/10 to-thai-green/10",
+      borderColor: "border-primary",
+      textColor: "text-foreground",
       popular: true
     },
     {
@@ -116,127 +129,124 @@ const Profile = () => {
         "ส่วนลดพิเศษร้านอาหาร",
         "ฟีเจอร์ทั้งหมดของ Plus"
       ],
-      color: "from-yellow-600 to-amber-700"
-    }
-  ];
-
-  const getPlanLabel = () => {
-    if (currentPlan === "free") return "Free";
-    if (currentPlan === "basic") return "Basic";
-    if (currentPlan === "plus") return "Plus";
-    if (currentPlan === "pro") return "Pro";
-    return "Free";
-  };
-
-  const userStats = [
-    {
-      label: "สูตรที่บันทึก",
-      value: "24",
-      icon: BookOpen,
-      color: "text-primary"
-    },
-    {
-      label: "ร้านโปรด",
-      value: "12",
-      icon: Heart,
-      color: "text-secondary"
-    },
-    {
-      label: "เลเวลเชฟ",
-      value: "มือใหม่",
-      icon: ChefHat,
-      color: "text-thai-green"
-    },
-    {
-      label: "คะแนนรีวิว",
-      value: "4.8",
-      icon: Award,
-      color: "text-yellow-600"
-    }
-  ];
-
-  const flavorProfile = [
-    { name: "เผ็ด", level: 80, color: "bg-red-500" },
-    { name: "หวาน", level: 60, color: "bg-pink-500" },
-    { name: "เปรี้ยว", level: 70, color: "bg-yellow-500" },
-    { name: "เค็ม", level: 40, color: "bg-blue-500" },
-    { name: "หอม", level: 90, color: "bg-thai-green" }
-  ];
-
-  const menuItems = [
-    {
-      title: "แก้ไขโปรไฟล์",
-      subtitle: "เปลี่ยนรูปภาพ ชื่อ และข้อมูลส่วนตัว",
-      icon: Edit2,
-      action: handleEditProfile
-    },
-    {
-      title: "การแจ้งเตือน",
-      subtitle: notifications ? "เปิดการแจ้งเตือน" : "ปิดการแจ้งเตือน",
-      icon: Bell,
-      isSwitch: true,
-      checked: notifications,
-      onChange: setNotifications
-    },
-    {
-      title: "ความเป็นส่วนตัว",
-      subtitle: privateProfile ? "โปรไฟล์ส่วนตัว" : "โปรไฟล์สาธารณะ",
-      icon: Shield,
-      isSwitch: true,
-      checked: privateProfile,
-      onChange: setPrivateProfile
-    },
-    {
-      title: "ตั้งค่า",
-      subtitle: "ภาษา, ธีม และการตั้งค่าอื่นๆ",
-      icon: Settings,
-      action: () => console.log("Settings")
+      gradient: "from-yellow-50 to-amber-100",
+      borderColor: "border-yellow-500",
+      textColor: "text-foreground"
     }
   ];
 
   return (
     <div className="min-h-screen bg-background pb-20">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+      <div className="sticky top-0 z-40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-primary">
-            โปรไฟล์
-          </h1>
-          {/* Premium Mode Toggle for Demo */}
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-muted-foreground">Demo Mode:</span>
-            <Switch 
-              checked={isPremiumMode} 
-              onCheckedChange={(checked) => {
-                setIsPremiumMode(checked);
-                if (!checked) setCurrentPlan("free");
-                toast({
-                  title: checked ? "Premium Mode เปิดใช้งาน" : "Free Mode เปิดใช้งาน",
-                  description: checked ? "กำลังแสดงฟีเจอร์พรีเมียม" : "กำลังแสดงฟีเจอร์ฟรี",
-                });
-              }}
-            />
-            <span className={isPremiumMode ? "text-yellow-500 font-semibold" : "text-muted-foreground"}>
-              {isPremiumMode ? "Premium" : "Free"}
-            </span>
+          <h1 className="text-2xl font-bold text-primary">โปรไฟล์</h1>
+          
+          {/* Demo Mode Toggle */}
+          <div className="flex items-center gap-3 bg-muted/50 px-4 py-2 rounded-full border border-border">
+            <span className="text-xs text-muted-foreground font-medium">โหมดทดสอบ:</span>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={demoMode === "free" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => {
+                  setDemoMode("free");
+                  setCurrentPlan("free");
+                }}
+                className="h-7 text-xs rounded-full"
+              >
+                Free
+              </Button>
+              <Button
+                variant={demoMode === "basic" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => {
+                  setDemoMode("basic");
+                  setCurrentPlan("basic");
+                }}
+                className="h-7 text-xs rounded-full"
+              >
+                Basic
+              </Button>
+              <Button
+                variant={demoMode === "plus" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => {
+                  setDemoMode("plus");
+                  setCurrentPlan("plus");
+                }}
+                className="h-7 text-xs rounded-full"
+              >
+                Plus
+              </Button>
+              <Button
+                variant={demoMode === "pro" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => {
+                  setDemoMode("pro");
+                  setCurrentPlan("pro");
+                }}
+                className="h-7 text-xs rounded-full"
+              >
+                Pro
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-6 space-y-6">
-        {/* Profile Header */}
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center space-x-4">
-              <div className="h-16 w-16 bg-gradient-temple-gold rounded-full flex items-center justify-center">
-                <User className="h-8 w-8 text-primary-foreground" />
+        {/* AI Chef Profile Card */}
+        <Card className="overflow-hidden border-2 border-primary/20 shadow-temple">
+          <div className="bg-gradient-temple-gold p-6">
+            <div className="flex items-center gap-4">
+              <div className="h-20 w-20 rounded-full border-4 border-white shadow-lg overflow-hidden bg-white">
+                <img src={chimpaiLogo} alt="AI Chef Chimpai" className="h-full w-full object-cover" />
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-foreground">
-                  {userName}
-                </h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-2xl font-bold text-white">AI Chef Chimpai</h2>
+                  <Sparkles className="h-5 w-5 text-yellow-200" />
+                </div>
+                <p className="text-white/90 text-sm mt-1">
+                  ผู้ช่วยเชฟส่วนตัวที่เข้าใจรสชาติไทยของคุณ
+                </p>
+                <Badge className="mt-2 bg-white/20 text-white border-white/30">
+                  <MessageSquare className="h-3 w-3 mr-1" />
+                  พร้อมให้คำแนะนำ 24/7
+                </Badge>
+              </div>
+            </div>
+          </div>
+          <CardContent className="pt-4">
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              สวัสดีครับ! ผมคือ AI Chef Chimpai ผู้ช่วยส่วนตัวที่จะช่วยคุณค้นหาเมนูอาหารไทยที่ใช่ 
+              วิเคราะห์รสชาติที่คุณชอบ และแนะนำร้านอาหารที่ตรงใจคุณที่สุด 🍜✨
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* User Profile Card */}
+        <Card className="shadow-thai">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <div className="relative">
+                <div className="h-20 w-20 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center shadow-temple">
+                  {userAvatar ? (
+                    <img src={userAvatar} alt={userName} className="h-full w-full rounded-full object-cover" />
+                  ) : (
+                    <User className="h-10 w-10 text-white" />
+                  )}
+                </div>
+                <button className="absolute bottom-0 right-0 h-7 w-7 bg-white rounded-full shadow-md flex items-center justify-center border-2 border-background hover:bg-muted transition-colors">
+                  <Camera className="h-4 w-4 text-primary" />
+                </button>
+              </div>
+              
+              <div className="flex-1">
+                <h2 className="text-xl font-bold text-foreground">{userName}</h2>
                 
-                {/* Account Dropdown Menu - ChatGPT Style */}
+                {/* Account Dropdown Menu */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors group mt-1">
@@ -244,157 +254,117 @@ const Profile = () => {
                       <ChevronDown className="h-3 w-3 group-hover:translate-y-0.5 transition-transform" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent 
-                    align="start" 
-                    className="w-64 bg-slate-900 border-slate-800 text-slate-100 shadow-2xl"
-                  >
+                  <DropdownMenuContent align="start" className="w-56 shadow-xl">
                     <DropdownMenuLabel className="pb-2">
                       <div className="flex items-center gap-2 text-xs">
-                        <span className="text-slate-400">แผนปัจจุบัน:</span>
-                        <Badge 
-                          variant={isPremiumMode ? "default" : "secondary"} 
-                          className={isPremiumMode ? "bg-gradient-to-r from-yellow-600 to-amber-700 text-white" : "bg-slate-700 text-slate-300"}
-                        >
-                          {isPremiumMode && <Crown className="h-3 w-3 mr-1" />}
+                        <span className="text-muted-foreground">แผนปัจจุบัน:</span>
+                        <Badge variant={demoMode !== "free" ? "default" : "secondary"}>
+                          {demoMode !== "free" && <Crown className="h-3 w-3 mr-1" />}
                           {getPlanLabel()}
                         </Badge>
                       </div>
                     </DropdownMenuLabel>
-                    <DropdownMenuSeparator className="bg-slate-800" />
+                    <DropdownMenuSeparator />
                     
                     <DropdownMenuItem 
-                      onClick={() => setIsSubscriptionDialogOpen(true)}
-                      className="hover:bg-slate-800 cursor-pointer py-3 focus:bg-slate-800 focus:text-slate-100"
+                      onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                      className="cursor-pointer py-3"
                     >
-                      <Crown className="h-4 w-4 mr-3 text-yellow-500" />
+                      <Crown className="h-4 w-4 mr-3 text-primary" />
                       <div>
                         <div className="font-semibold">อัปเกรดแผน</div>
-                        <div className="text-xs text-slate-400">ปลดล็อกฟีเจอร์พรีเมียม</div>
+                        <div className="text-xs text-muted-foreground">ปลดล็อกฟีเจอร์พรีเมียม</div>
                       </div>
-                    </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
-                      onClick={handleEditProfile}
-                      className="hover:bg-slate-800 cursor-pointer py-3 focus:bg-slate-800 focus:text-slate-100"
-                    >
-                      <UserCircle className="h-4 w-4 mr-3" />
-                      <div>
-                        <div className="font-semibold">ตั้งค่าส่วนตัว</div>
-                        <div className="text-xs text-slate-400">จัดการข้อมูลของคุณ</div>
-                      </div>
-                    </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
-                      className="hover:bg-slate-800 cursor-pointer py-3 focus:bg-slate-800 focus:text-slate-100"
-                    >
-                      <Settings className="h-4 w-4 mr-3" />
-                      <div>
-                        <div className="font-semibold">ตั้งค่าแอป</div>
-                        <div className="text-xs text-slate-400">ธีม, ภาษา และการแจ้งเตือน</div>
-                      </div>
-                    </DropdownMenuItem>
-                    
-                    <DropdownMenuItem 
-                      className="hover:bg-slate-800 cursor-pointer py-3 focus:bg-slate-800 focus:text-slate-100"
-                    >
-                      <HelpCircle className="h-4 w-4 mr-3" />
-                      <div>
-                        <div className="font-semibold">ศูนย์ช่วยเหลือ</div>
-                        <div className="text-xs text-slate-400">คำถามที่พบบ่อย & การสนับสนุน</div>
-                      </div>
-                    </DropdownMenuItem>
-                    
-                    <DropdownMenuSeparator className="bg-slate-800" />
-                    
-                    <DropdownMenuItem 
-                      className="hover:bg-red-900/20 cursor-pointer py-3 text-red-400 focus:bg-red-900/20 focus:text-red-400"
-                    >
-                      <LogOut className="h-4 w-4 mr-3" />
-                      <div className="font-semibold">ออกจากระบบ</div>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                <div className="flex items-center mt-2">
-                  <Badge variant="secondary" className="mr-2">
+                <div className="flex items-center gap-2 mt-2">
+                  <Badge variant="secondary" className="text-xs">
                     <Award className="h-3 w-3 mr-1" />
                     สมาชิกระดับเงิน
                   </Badge>
-                  <Badge variant="outline">
-                    เข้าร่วม 6 เดือน
-                  </Badge>
+                  <Badge variant="outline" className="text-xs">เข้าร่วม 6 เดือน</Badge>
                 </div>
               </div>
-              <Button variant="outline" size="icon" onClick={handleEditProfile}>
+              
+              <Button variant="outline" size="sm" onClick={handleEditProfile} className="gap-2">
                 <Edit2 className="h-4 w-4" />
+                แก้ไข
               </Button>
             </div>
           </CardContent>
         </Card>
 
-        {/* Stats */}
+        {/* Chatbot Quota Bar (for Free users only) */}
+        {demoMode === "free" && (
+          <Card className="border-2 border-primary/20 shadow-md">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                  โควต้าแชทบอท AI Chef
+                </CardTitle>
+                <Badge variant="secondary" className="text-xs">
+                  {chatbotUsage}/{maxChatbots} ครั้ง
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Progress value={chatbotPercentage} className="h-2" />
+              <p className="text-xs text-muted-foreground">
+                คุณใช้งานไปแล้ว {chatbotUsage} ครั้งจาก {maxChatbots} ครั้งในเดือนนี้
+                {chatbotUsage >= maxChatbots ? " ⚠️ ถึงลิมิตแล้ว" : ` (เหลืออีก ${maxChatbots - chatbotUsage} ครั้ง)`}
+              </p>
+              {chatbotUsage >= maxChatbots * 0.8 && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                  <p className="text-xs text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
+                    <Zap className="h-4 w-4" />
+                    อัปเกรดเป็นแผน Premium เพื่อใช้งานแชทบอทได้ไม่จำกัด!
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
-          {userStats.map((stat, index) => {
-            const isLocked = !isPremiumMode && (stat.label === "สูตรที่บันทึก" || stat.label === "ร้านโปรด");
-            return (
-              <Card key={index} className={isLocked ? "opacity-50 relative" : ""}>
-                <CardContent className="pt-6">
-                  {isLocked && (
-                    <div className="absolute inset-0 bg-background/80 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                      <Crown className="h-6 w-6 text-yellow-500" />
-                    </div>
-                  )}
-                  <div className="flex items-center space-x-3">
-                    <div className={`${stat.color}`}>
-                      <stat.icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold">{stat.value}</p>
-                      <p className="text-sm text-muted-foreground">{stat.label}</p>
+          {[
+            { label: "สูตรที่บันทึก", value: "24", icon: BookOpen, locked: demoMode === "free" },
+            { label: "ร้านโปรด", value: "12", icon: Heart, locked: demoMode === "free" },
+            { label: "เลเวลเชฟ", value: "มือใหม่", icon: ChefHat, locked: false },
+            { label: "คะแนนรีวิว", value: "4.8", icon: Award, locked: false }
+          ].map((stat, index) => (
+            <Card key={index} className={stat.locked ? "opacity-60 relative overflow-hidden" : ""}>
+              <CardContent className="pt-6">
+                {stat.locked && (
+                  <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] flex items-center justify-center">
+                    <div className="text-center">
+                      <Crown className="h-6 w-6 text-primary mx-auto mb-1" />
+                      <span className="text-xs text-muted-foreground font-medium">Premium</span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                )}
+                <div className="flex items-center gap-3">
+                  <div className="text-primary">
+                    <stat.icon className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Personal Information */}
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center space-x-2">
-                <UserCircle className="h-5 w-5 text-primary" />
-                <span>ข้อมูลส่วนตัว</span>
-              </CardTitle>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleEditProfile}
-                >
-                  <Edit2 className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setPersonalInfoVisible(!personalInfoVisible)}
-                  className="flex items-center gap-2"
-                >
-                  {personalInfoVisible ? (
-                    <>
-                      <Eye className="h-4 w-4" />
-                      <span className="text-xs">แสดงต่อผู้อื่น</span>
-                    </>
-                  ) : (
-                    <>
-                      <EyeOff className="h-4 w-4" />
-                      <span className="text-xs">ซ่อนจากผู้อื่น</span>
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
+            <CardTitle className="text-lg">ข้อมูลส่วนตัว</CardTitle>
+            <CardDescription>จัดการข้อมูลโปรไฟล์ของคุณ</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between items-center py-2 border-b border-border">
@@ -407,231 +377,162 @@ const Profile = () => {
             </div>
             <div className="flex justify-between items-center py-2 border-b border-border">
               <span className="text-sm text-muted-foreground">โรคประจำตัว</span>
-              <span className="font-medium">{personalInfo.chronicDiseases.join(", ")}</span>
+              <span className="font-medium text-right">{personalInfo.chronicDiseases.join(", ")}</span>
             </div>
             <div className="flex justify-between items-center py-2">
               <span className="text-sm text-muted-foreground">อาหารที่แพ้</span>
-              <span className="font-medium">{personalInfo.foodAllergies.join(", ")}</span>
+              <span className="font-medium text-right">{personalInfo.foodAllergies.join(", ")}</span>
             </div>
-            {!personalInfoVisible && (
-              <div className="bg-muted/50 rounded-lg p-3 mt-2">
-                <p className="text-xs text-muted-foreground flex items-center gap-2">
-                  <Shield className="h-3 w-3" />
-                  ข้อมูลนี้จะไม่แสดงต่อผู้ใช้คนอื่น
-                </p>
-              </div>
-            )}
           </CardContent>
         </Card>
 
-        {/* Flavor Profile */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <ChefHat className="h-5 w-5 text-primary" />
-              <span>โปรไฟล์รสชาติของคุณ</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {flavorProfile.map((flavor, index) => (
-              <div key={index} className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="font-medium">{flavor.name}</span>
-                  <span className="text-muted-foreground">{flavor.level}%</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div
-                    className={`h-2 rounded-full ${flavor.color}`}
-                    style={{ width: `${flavor.level}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        {/* Subscription Section */}
+        <div className="pt-6">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-2">แผนสมาชิก Chimpai</h2>
+            <p className="text-muted-foreground">เลือกแผนที่เหมาะกับคุณและปลดล็อกประสบการณ์ครบครัน</p>
+          </div>
 
-        {/* Theme Toggle */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Palette className="h-5 w-5 text-primary" />
-              <span>ธีมแอปพลิเคชัน</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ThemeToggle />
-          </CardContent>
-        </Card>
-
-        {/* Menu Items */}
-        <Card>
-          <CardContent className="p-0">
-            {menuItems.map((item, index) => (
-              <div key={index}>
-                <div
-                  className="flex items-center justify-between p-4 cursor-pointer hover:bg-muted/50 transition-colors"
-                  onClick={item.action}
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="text-primary">
-                      <item.icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{item.title}</p>
-                      <p className="text-sm text-muted-foreground">{item.subtitle}</p>
-                    </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {subscriptionPlans.map((plan) => (
+              <Card 
+                key={plan.id}
+                className={`relative overflow-hidden transition-all hover:shadow-xl ${
+                  plan.popular ? 'border-2 border-primary scale-105' : 'border border-border'
+                } ${demoMode === plan.id ? 'ring-2 ring-primary' : ''}`}
+              >
+                {plan.popular && (
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-primary text-primary-foreground">
+                      <Sparkles className="h-3 w-3 mr-1" />
+                      แนะนำ
+                    </Badge>
                   </div>
-                  {item.isSwitch ? (
-                    <Switch
-                      checked={item.checked}
-                      onCheckedChange={item.onChange}
-                    />
-                  ) : (
-                    <div className="text-muted-foreground">
-                      <Edit2 className="h-4 w-4" />
-                    </div>
-                  )}
+                )}
+                
+                <div className={`h-32 bg-gradient-to-br ${plan.gradient} flex flex-col items-center justify-center border-b ${plan.borderColor}`}>
+                  <h3 className={`text-2xl font-bold ${plan.textColor} mb-1`}>{plan.name}</h3>
+                  <div className="flex items-baseline">
+                    <span className={`text-4xl font-bold ${plan.textColor}`}>{plan.price}</span>
+                    <span className={`text-sm ml-1 ${plan.textColor} opacity-70`}>{plan.period}</span>
+                  </div>
                 </div>
-                {index < menuItems.length - 1 && <Separator />}
-              </div>
+
+                <CardContent className="pt-6 space-y-4">
+                  <ul className="space-y-3">
+                    {plan.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm">
+                        <Check className="h-4 w-4 text-thai-green mt-0.5 flex-shrink-0" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Button
+                    onClick={() => handleUpgradePlan(plan.id as "basic" | "plus" | "pro")}
+                    className="w-full"
+                    variant={demoMode === plan.id ? "secondary" : "default"}
+                    disabled={demoMode === plan.id}
+                  >
+                    {demoMode === plan.id ? (
+                      <>
+                        <Check className="h-4 w-4 mr-2" />
+                        แผนปัจจุบัน
+                      </>
+                    ) : (
+                      <>
+                        <Crown className="h-4 w-4 mr-2" />
+                        อัปเกรดเลย
+                      </>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
             ))}
-          </CardContent>
-        </Card>
-
-        {/* Logout */}
-        <Card>
-          <CardContent className="p-4">
-            <Button
-              variant="outline"
-              className="w-full justify-start text-destructive border-destructive hover:bg-destructive hover:text-destructive-foreground"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              ออกจากระบบ
-            </Button>
-          </CardContent>
-        </Card>
-
-        {/* Edit Profile Dialog */}
-        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>แก้ไขข้อมูลส่วนตัว</DialogTitle>
-              <DialogDescription>อัปเดตข้อมูลโปรไฟล์ของคุณ</DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">ชื่อ-นามสกุล</Label>
-                <Input id="name" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} placeholder="กรอกชื่อ-นามสกุล" />
-              </div>
-              <div className="space-y-2">
-                <Label>เพศ</Label>
-                <RadioGroup value={editForm.gender} onValueChange={(value) => setEditForm({ ...editForm, gender: value })}>
-                  <div className="flex items-center space-x-2"><RadioGroupItem value="ชาย" id="male" /><Label htmlFor="male">ชาย</Label></div>
-                  <div className="flex items-center space-x-2"><RadioGroupItem value="หญิง" id="female" /><Label htmlFor="female">หญิง</Label></div>
-                  <div className="flex items-center space-x-2"><RadioGroupItem value="อื่นๆ" id="other" /><Label htmlFor="other">อื่นๆ</Label></div>
-                </RadioGroup>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="age">อายุ</Label>
-                <Input id="age" type="number" value={editForm.age} onChange={(e) => setEditForm({ ...editForm, age: e.target.value })} placeholder="กรอกอายุ" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="chronic">โรคประจำตัว</Label>
-                <Input id="chronic" value={editForm.chronicDiseases} onChange={(e) => setEditForm({ ...editForm, chronicDiseases: e.target.value })} placeholder="เช่น เบาหวาน, ความดันโลหิตสูง (คั่นด้วยจุลภาค)" />
-                <p className="text-xs text-muted-foreground">หากไม่มีให้ใส่ "ไม่มี"</p>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="allergies">อาหารที่แพ้</Label>
-                <Input id="allergies" value={editForm.foodAllergies} onChange={(e) => setEditForm({ ...editForm, foodAllergies: e.target.value })} placeholder="เช่น ทะเล, ถั่ว, นม (คั่นด้วยจุลภาค)" />
-                <p className="text-xs text-muted-foreground">หากไม่มีให้ใส่ "ไม่มี"</p>
-              </div>
-            </div>
-            <div className="flex gap-2 justify-end">
-              <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>ยกเลิก</Button>
-              <Button onClick={handleSaveProfile}>บันทึก</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-
-        {/* Subscription Plans Dialog */}
-        <Dialog open={isSubscriptionDialogOpen} onOpenChange={setIsSubscriptionDialogOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-slate-950 border-slate-800 text-slate-100">
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-bold text-center bg-gradient-to-r from-yellow-400 to-amber-600 bg-clip-text text-transparent">
-                เลือกแผนที่เหมาะกับคุณ
-              </DialogTitle>
-              <DialogDescription className="text-center text-slate-400">
-                ปลดล็อกประสบการณ์อาหารไทยสุดพิเศษด้วย AI
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="grid md:grid-cols-3 gap-4 py-6">
-              {subscriptionPlans.map((plan) => (
-                <Card 
-                  key={plan.id}
-                  className={`relative bg-slate-900 border-slate-800 hover:border-slate-700 transition-all duration-300 ${
-                    plan.popular ? 'ring-2 ring-primary shadow-lg shadow-primary/20' : ''
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-gradient-to-r from-primary to-thai-green text-white px-4 py-1">
-                        <Sparkles className="h-3 w-3 mr-1" />
-                        ยอดนิยม
-                      </Badge>
-                    </div>
-                  )}
-                  
-                  <CardHeader>
-                    <div className={`w-full h-24 rounded-lg bg-gradient-to-br ${plan.color} flex items-center justify-center mb-4`}>
-                      <Crown className="h-12 w-12 text-white" />
-                    </div>
-                    <CardTitle className="text-slate-100 text-2xl">{plan.name}</CardTitle>
-                    <div className="flex items-baseline gap-1 mt-2">
-                      <span className="text-4xl font-bold text-slate-100">{plan.price}</span>
-                      <span className="text-slate-400">{plan.period}</span>
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent className="space-y-4">
-                    <ul className="space-y-3">
-                      {plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-sm text-slate-300">
-                          <Check className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <Button
-                      onClick={() => handleUpgradePlan(plan.id as "basic" | "plus" | "pro")}
-                      className={`w-full ${
-                        plan.popular 
-                          ? 'bg-gradient-to-r from-primary to-thai-green hover:opacity-90' 
-                          : 'bg-slate-800 hover:bg-slate-700 text-slate-100'
-                      }`}
-                      disabled={currentPlan === plan.id}
-                    >
-                      {currentPlan === plan.id ? (
-                        <>
-                          <Check className="h-4 w-4 mr-2" />
-                          แผนปัจจุบัน
-                        </>
-                      ) : (
-                        `เลือกแผน ${plan.name}`
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            <div className="text-center text-xs text-slate-400 pb-2">
-              💡 ทุกแผนสามารถยกเลิกได้ทุกเมื่อ ไม่มีค่าผูกมัด
-            </div>
-          </DialogContent>
-        </Dialog>
+          </div>
+        </div>
       </div>
+
+      {/* Edit Profile Dialog */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>แก้ไขโปรไฟล์</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">ชื่อ-นามสกุล</Label>
+              <Input
+                id="name"
+                value={editForm.name}
+                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                placeholder="กรอกชื่อของคุณ"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>เพศ</Label>
+              <RadioGroup 
+                value={editForm.gender} 
+                onValueChange={(value) => setEditForm({ ...editForm, gender: value })}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="ชาย" id="male" />
+                  <Label htmlFor="male">ชาย</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="หญิง" id="female" />
+                  <Label htmlFor="female">หญิง</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="อื่นๆ" id="other" />
+                  <Label htmlFor="other">อื่นๆ</Label>
+                </div>
+              </RadioGroup>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="age">อายุ</Label>
+              <Input
+                id="age"
+                type="number"
+                value={editForm.age}
+                onChange={(e) => setEditForm({ ...editForm, age: e.target.value })}
+                placeholder="กรอกอายุของคุณ"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="diseases">โรคประจำตัว</Label>
+              <Input
+                id="diseases"
+                value={editForm.chronicDiseases}
+                onChange={(e) => setEditForm({ ...editForm, chronicDiseases: e.target.value })}
+                placeholder="ระบุโรคประจำตัว (คั่นด้วย ,)"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="allergies">อาหารที่แพ้</Label>
+              <Input
+                id="allergies"
+                value={editForm.foodAllergies}
+                onChange={(e) => setEditForm({ ...editForm, foodAllergies: e.target.value })}
+                placeholder="ระบุอาหารที่แพ้ (คั่นด้วย ,)"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)} className="flex-1">
+              ยกเลิก
+            </Button>
+            <Button onClick={handleSaveProfile} className="flex-1">
+              บันทึก
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
