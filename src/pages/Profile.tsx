@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { User, Heart, BookOpen, Award, ChefHat, Edit2, Crown, ChevronDown, Check, Sparkles, MessageSquare, Camera, Zap } from "lucide-react";
+import { User, Heart, BookOpen, Award, ChefHat, Edit2, Crown, ChevronDown, Check, Sparkles, MessageSquare, Camera, Zap, Settings, HelpCircle, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -118,31 +118,51 @@ const Profile = () => {
           <h1 className="text-2xl font-bold text-primary">โปรไฟล์</h1>
           
           {/* Demo Mode Toggle */}
-          <div className="flex items-center gap-3 bg-muted/50 px-4 py-2 rounded-full border border-border">
-            <span className="text-xs text-muted-foreground font-medium">โหมดทดสอบ:</span>
+          <div className="flex items-center gap-3 bg-gradient-to-r from-primary/10 to-primary/5 px-4 py-2 rounded-full border border-primary/20">
+            <span className="text-xs text-foreground font-medium">โหมดทดสอบ:</span>
             <div className="flex items-center gap-2">
-              <Button variant={demoMode === "free" ? "default" : "ghost"} size="sm" onClick={() => {
-              setDemoMode("free");
-              setCurrentPlan("free");
-            }} className="h-7 text-xs rounded-full">
+              <Button 
+                variant={demoMode === "free" ? "default" : "ghost"} 
+                size="sm" 
+                onClick={() => {
+                  setDemoMode("free");
+                  setCurrentPlan("free");
+                }} 
+                className="h-7 text-xs rounded-full transition-all"
+              >
                 Free
               </Button>
-              <Button variant={demoMode === "basic" ? "default" : "ghost"} size="sm" onClick={() => {
-              setDemoMode("basic");
-              setCurrentPlan("basic");
-            }} className="h-7 text-xs rounded-full">
+              <Button 
+                variant={demoMode === "basic" ? "default" : "ghost"} 
+                size="sm" 
+                onClick={() => {
+                  setDemoMode("basic");
+                  setCurrentPlan("basic");
+                }} 
+                className="h-7 text-xs rounded-full transition-all"
+              >
                 Basic
               </Button>
-              <Button variant={demoMode === "plus" ? "default" : "ghost"} size="sm" onClick={() => {
-              setDemoMode("plus");
-              setCurrentPlan("plus");
-            }} className="h-7 text-xs rounded-full">
+              <Button 
+                variant={demoMode === "plus" ? "default" : "ghost"} 
+                size="sm" 
+                onClick={() => {
+                  setDemoMode("plus");
+                  setCurrentPlan("plus");
+                }} 
+                className="h-7 text-xs rounded-full transition-all"
+              >
                 Plus
               </Button>
-              <Button variant={demoMode === "pro" ? "default" : "ghost"} size="sm" onClick={() => {
-              setDemoMode("pro");
-              setCurrentPlan("pro");
-            }} className="h-7 text-xs rounded-full">
+              <Button 
+                variant={demoMode === "pro" ? "default" : "ghost"} 
+                size="sm" 
+                onClick={() => {
+                  setDemoMode("pro");
+                  setCurrentPlan("pro");
+                }} 
+                className="h-7 text-xs rounded-full transition-all"
+              >
                 Pro
               </Button>
             </div>
@@ -189,14 +209,48 @@ const Profile = () => {
                     <DropdownMenuSeparator />
                     
                     <DropdownMenuItem onClick={() => window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: 'smooth'
-                  })} className="cursor-pointer py-3">
+                      top: document.body.scrollHeight,
+                      behavior: 'smooth'
+                    })} className="cursor-pointer py-3">
                       <Crown className="h-4 w-4 mr-3 text-primary" />
                       <div>
                         <div className="font-semibold">อัปเกรดแผน</div>
                         <div className="text-xs text-muted-foreground">ปลดล็อกฟีเจอร์พรีเมียม</div>
                       </div>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+
+                    <DropdownMenuItem onClick={() => {
+                      toast({
+                        title: "การตั้งค่าส่วนตัว",
+                        description: "กำลังเปิดการตั้งค่า..."
+                      });
+                    }} className="cursor-pointer py-2">
+                      <Settings className="h-4 w-4 mr-3" />
+                      <span>การตั้งค่าส่วนตัว</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem onClick={() => {
+                      toast({
+                        title: "ศูนย์ช่วยเหลือ",
+                        description: "กำลังเปิดศูนย์ช่วยเหลือ..."
+                      });
+                    }} className="cursor-pointer py-2">
+                      <HelpCircle className="h-4 w-4 mr-3" />
+                      <span>ศูนย์ช่วยเหลือ</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuSeparator />
+
+                    <DropdownMenuItem onClick={() => {
+                      toast({
+                        title: "ออกจากระบบ",
+                        description: "กำลังออกจากระบบ..."
+                      });
+                    }} className="cursor-pointer py-2 text-destructive focus:text-destructive">
+                      <LogOut className="h-4 w-4 mr-3" />
+                      <span>ออกจากระบบ</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -218,33 +272,6 @@ const Profile = () => {
           </CardContent>
         </Card>
 
-        {/* Chatbot Quota Bar (for Free users only) */}
-        {demoMode === "free" && <Card className="border-2 border-primary/20 shadow-md">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5 text-primary" />
-                  โควต้าแชทบอท AI Chef
-                </CardTitle>
-                <Badge variant="secondary" className="text-xs">
-                  {chatbotUsage}/{maxChatbots} ครั้ง
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Progress value={chatbotPercentage} className="h-2" />
-              <p className="text-xs text-muted-foreground">
-                คุณใช้งานไปแล้ว {chatbotUsage} ครั้งจาก {maxChatbots} ครั้งในเดือนนี้
-                {chatbotUsage >= maxChatbots ? " ⚠️ ถึงลิมิตแล้ว" : ` (เหลืออีก ${maxChatbots - chatbotUsage} ครั้ง)`}
-              </p>
-              {chatbotUsage >= maxChatbots * 0.8 && <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-                  <p className="text-xs text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
-                    <Zap className="h-4 w-4" />
-                    อัปเกรดเป็นแผน Premium เพื่อใช้งานแชทบอทได้ไม่จำกัด!
-                  </p>
-                </div>}
-            </CardContent>
-          </Card>}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">

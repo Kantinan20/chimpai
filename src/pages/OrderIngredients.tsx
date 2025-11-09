@@ -9,7 +9,7 @@ const OrderIngredients = () => {
     {
       id: "shopee",
       name: "Shopee",
-      logo: "https://images.unsplash.com/photo-1557821552-17105176677c?w=80&h=80&fit=crop",
+      logo: "https://logo.clearbit.com/shopee.co.th",
       description: "ส่วนผสมอาหารไทย พร้อมส่งถึงบ้าน",
       rating: 4.8,
       deliveryTime: "ส่งไว 2 ชั่วโมง",
@@ -18,20 +18,9 @@ const OrderIngredients = () => {
       color: "bg-orange-500"
     },
     {
-      id: "7eleven",
-      name: "7-Eleven",
-      logo: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=80&h=80&fit=crop",
-      description: "สะดวกสบาย มีทุกที่",
-      rating: 4.6,
-      deliveryTime: "รับสินค้าภายใน 24 ชม.",
-      url: "https://www.7eleven.co.th",
-      badge: "สาขาใกล้บ้าน",
-      color: "bg-green-600"
-    },
-    {
       id: "lotus",
       name: "Lotus's",
-      logo: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=80&h=80&fit=crop",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Lotus%27s_logo.svg/200px-Lotus%27s_logo.svg.png",
       description: "ซูเปอร์มาร์เก็ตครบครัน",
       rating: 4.7,
       deliveryTime: "จัดส่งภายใน 3 ชม.",
@@ -40,37 +29,29 @@ const OrderIngredients = () => {
       color: "bg-red-600"
     },
     {
-      id: "tops",
-      name: "Tops",
-      logo: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=80&h=80&fit=crop",
-      description: "ส่วนผสมคุณภาพพรีเมี่ยม",
-      rating: 4.8,
-      deliveryTime: "จัดส่งภายใน 2 ชม.",
-      url: "https://www.tops.co.th",
-      badge: "คุณภาพสูง",
-      color: "bg-blue-600"
-    },
-    {
       id: "bigc",
       name: "BigC",
-      logo: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=80&h=80&fit=crop",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Big_C_Logo.svg/200px-Big_C_Logo.svg.png",
       description: "ช้อปครบจบในที่เดียว",
       rating: 4.5,
       deliveryTime: "จัดส่งภายใน 4 ชม.",
       url: "https://www.bigc.co.th",
       badge: "โปรโมชั่นเยอะ",
       color: "bg-purple-600"
+    },
+    {
+      id: "7eleven",
+      name: "7-Eleven",
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/7-eleven_logo.svg/200px-7-eleven_logo.svg.png",
+      description: "สะดวกสบาย มีทุกที่",
+      rating: 4.6,
+      deliveryTime: "รับสินค้าภายใน 24 ชม.",
+      url: "https://www.7eleven.co.th",
+      badge: "สาขาใกล้บ้าน",
+      color: "bg-green-600"
     }
   ];
 
-  const popularIngredients = [
-    { name: "พริกไทย", price: "฿25", image: "https://images.unsplash.com/photo-1583623733237-4d5764e9c18b?w=200&h=150&fit=crop", inStock: true },
-    { name: "กุ้งสด", price: "฿180/กก.", image: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=200&h=150&fit=crop", inStock: true },
-    { name: "ตะไคร้", price: "฿15", image: "https://images.unsplash.com/photo-1629193917250-06238e94f144?w=200&h=150&fit=crop", inStock: true },
-    { name: "น้ำปลา", price: "฿45", image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200&h=150&fit=crop", inStock: true },
-    { name: "กะทิสด", price: "฿35", image: "https://images.unsplash.com/photo-1608181831042-5f88d2580e6b?w=200&h=150&fit=crop", inStock: false },
-    { name: "ใบโหระพา", price: "฿10", image: "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=200&h=150&fit=crop", inStock: true }
-  ];
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -125,32 +106,6 @@ const OrderIngredients = () => {
           </div>
         </section>
 
-        {/* Popular Ingredients */}
-        <section>
-          <h2 className="text-2xl font-bold mb-6">ส่วนผสมยอดนิยม</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {popularIngredients.map((ingredient, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <img 
-                      src={ingredient.image} 
-                      alt={ingredient.name}
-                      className="w-full h-32 object-cover rounded-t-lg"
-                    />
-                    {!ingredient.inStock && (
-                      <Badge className="absolute top-2 right-2 bg-red-500">หมด</Badge>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-semibold text-sm mb-1">{ingredient.name}</h3>
-                    <p className="text-primary font-bold text-sm">{ingredient.price}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
 
         {/* Info Banner */}
         <Card className="mt-8 bg-gradient-cultural border-primary/20">

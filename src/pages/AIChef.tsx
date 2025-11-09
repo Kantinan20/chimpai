@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Send, Bot, User, Sparkles, Clock } from "lucide-react";
+import { Send, Bot, User, Sparkles, Clock, MessageSquare, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 interface Message {
   id: string;
@@ -23,6 +24,12 @@ const AIChef = () => {
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  
+  // Chatbot quota for free users
+  const [chatbotUsage, setChatbotUsage] = useState(15); // Used 15 out of 30
+  const maxChatbots = 30;
+  const chatbotPercentage = (chatbotUsage / maxChatbots) * 100;
+  const isFreePlan = true; // This would be dynamic based on user's plan
 
   const suggestions = [
     "แนะนำอาหารไทยง่ายๆ สำหรับมือใหม่",
@@ -177,6 +184,42 @@ const AIChef = () => {
           </div>
         </div>
       </div>
+
+      {/* Chatbot Quota Bar (for Free users only) */}
+      {isFreePlan && (
+        <div className="container mx-auto px-4 pt-4">
+          <Card className="border-2 border-primary/20 shadow-md">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                  โควต้าแชทบอท AI Chef
+                </CardTitle>
+                <Badge variant="secondary" className="text-xs">
+                  {chatbotUsage}/{maxChatbots} ครั้ง
+                </Badge>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Progress value={chatbotPercentage} className="h-2" />
+              <p className="text-xs text-muted-foreground">
+                คุณใช้งานไปแล้ว {chatbotUsage} ครั้งจาก {maxChatbots} ครั้งในเดือนนี้
+                {chatbotUsage >= maxChatbots 
+                  ? " ⚠️ ถึงลิมิตแล้ว" 
+                  : ` (เหลืออีก ${maxChatbots - chatbotUsage} ครั้ง)`}
+              </p>
+              {chatbotUsage >= maxChatbots * 0.8 && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                  <p className="text-xs text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
+                    <Zap className="h-4 w-4" />
+                    อัปเกรดเป็นแผน Premium เพื่อใช้งานแชทบอทได้ไม่จำกัด!
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Messages */}
       <div className="container mx-auto px-4 py-4 space-y-4">
