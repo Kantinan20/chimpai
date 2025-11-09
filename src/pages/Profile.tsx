@@ -12,9 +12,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { useToast } from "@/hooks/use-toast";
 import { Progress } from "@/components/ui/progress";
 import chimpaiLogo from "@/assets/chimpai-logo.png";
-
 const Profile = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<"free" | "basic" | "plus" | "pro">("free");
   const [demoMode, setDemoMode] = useState<"free" | "basic" | "plus" | "pro">("free");
@@ -41,8 +42,7 @@ const Profile = () => {
   // Chatbot quota for free users
   const [chatbotUsage, setChatbotUsage] = useState(15); // Used 15 out of 30
   const maxChatbots = 30;
-  const chatbotPercentage = (chatbotUsage / maxChatbots) * 100;
-
+  const chatbotPercentage = chatbotUsage / maxChatbots * 100;
   const handleEditProfile = () => {
     setEditForm({
       name: userName,
@@ -53,7 +53,6 @@ const Profile = () => {
     });
     setIsEditDialogOpen(true);
   };
-
   const handleSaveProfile = () => {
     setUserName(editForm.name);
     setPersonalInfo({
@@ -65,19 +64,17 @@ const Profile = () => {
     setIsEditDialogOpen(false);
     toast({
       title: "บันทึกสำเร็จ",
-      description: "ข้อมูลโปรไฟล์ของคุณได้รับการอัปเดตแล้ว",
+      description: "ข้อมูลโปรไฟล์ของคุณได้รับการอัปเดตแล้ว"
     });
   };
-
   const handleUpgradePlan = (plan: "basic" | "plus" | "pro") => {
     setCurrentPlan(plan);
     setDemoMode(plan);
     toast({
       title: "อัปเกรดสำเร็จ! 🎉",
-      description: `คุณได้อัปเกรดเป็นแผน ${plan === "basic" ? "Basic" : plan === "plus" ? "Plus" : "Pro"} แล้ว`,
+      description: `คุณได้อัปเกรดเป็นแผน ${plan === "basic" ? "Basic" : plan === "plus" ? "Plus" : "Pro"} แล้ว`
     });
   };
-
   const getPlanLabel = () => {
     if (demoMode === "free") return "Free";
     if (demoMode === "basic") return "Basic";
@@ -85,58 +82,36 @@ const Profile = () => {
     if (demoMode === "pro") return "Pro";
     return "Free";
   };
-
-  const subscriptionPlans = [
-    {
-      id: "basic",
-      name: "Basic",
-      price: "฿79",
-      period: "/เดือน",
-      features: [
-        "แชทบอทไม่จำกัดทุกเวลา",
-        "เข้าถึงสูตรอาหารพื้นฐาน",
-        "รับการแจ้งเตือนพิเศษ"
-      ],
-      gradient: "from-slate-100 to-slate-200",
-      borderColor: "border-slate-300",
-      textColor: "text-slate-800"
-    },
-    {
-      id: "plus",
-      name: "Plus",
-      price: "฿189",
-      period: "/เดือน",
-      features: [
-        "บันทึกและกดถูกใจสูตรได้ไม่จำกัด",
-        "รับคำแนะนำเมนูที่เหมาะกับคุณ",
-        "ระบบวางแผนมื้ออาหารอัจฉริยะ",
-        "ฟีเจอร์ทั้งหมดของ Basic"
-      ],
-      gradient: "from-primary/10 to-thai-green/10",
-      borderColor: "border-primary",
-      textColor: "text-foreground",
-      popular: true
-    },
-    {
-      id: "pro",
-      name: "Pro",
-      price: "฿299",
-      period: "/เดือน",
-      features: [
-        "บันทึกสูตรไม่จำกัด",
-        "AI Chatbot ส่วนตัว 24/7",
-        "วางแผนมื้ออาหารเชื่อมกับข้อมูลสุขภาพ",
-        "ส่วนลดพิเศษร้านอาหาร",
-        "ฟีเจอร์ทั้งหมดของ Plus"
-      ],
-      gradient: "from-yellow-50 to-amber-100",
-      borderColor: "border-yellow-500",
-      textColor: "text-foreground"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background pb-20">
+  const subscriptionPlans = [{
+    id: "basic",
+    name: "Basic",
+    price: "฿79",
+    period: "/เดือน",
+    features: ["แชทบอทไม่จำกัดทุกเวลา", "เข้าถึงสูตรอาหารพื้นฐาน", "รับการแจ้งเตือนพิเศษ"],
+    gradient: "from-slate-100 to-slate-200",
+    borderColor: "border-slate-300",
+    textColor: "text-slate-800"
+  }, {
+    id: "plus",
+    name: "Plus",
+    price: "฿189",
+    period: "/เดือน",
+    features: ["บันทึกและกดถูกใจสูตรได้ไม่จำกัด", "รับคำแนะนำเมนูที่เหมาะกับคุณ", "ระบบวางแผนมื้ออาหารอัจฉริยะ", "ฟีเจอร์ทั้งหมดของ Basic"],
+    gradient: "from-primary/10 to-thai-green/10",
+    borderColor: "border-primary",
+    textColor: "text-foreground",
+    popular: true
+  }, {
+    id: "pro",
+    name: "Pro",
+    price: "฿299",
+    period: "/เดือน",
+    features: ["บันทึกสูตรไม่จำกัด", "AI Chatbot ส่วนตัว 24/7", "วางแผนมื้ออาหารเชื่อมกับข้อมูลสุขภาพ", "ส่วนลดพิเศษร้านอาหาร", "ฟีเจอร์ทั้งหมดของ Plus"],
+    gradient: "from-yellow-50 to-amber-100",
+    borderColor: "border-yellow-500",
+    textColor: "text-foreground"
+  }];
+  return <div className="min-h-screen bg-background pb-20">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 border-b border-border shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -146,48 +121,28 @@ const Profile = () => {
           <div className="flex items-center gap-3 bg-muted/50 px-4 py-2 rounded-full border border-border">
             <span className="text-xs text-muted-foreground font-medium">โหมดทดสอบ:</span>
             <div className="flex items-center gap-2">
-              <Button
-                variant={demoMode === "free" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => {
-                  setDemoMode("free");
-                  setCurrentPlan("free");
-                }}
-                className="h-7 text-xs rounded-full"
-              >
+              <Button variant={demoMode === "free" ? "default" : "ghost"} size="sm" onClick={() => {
+              setDemoMode("free");
+              setCurrentPlan("free");
+            }} className="h-7 text-xs rounded-full">
                 Free
               </Button>
-              <Button
-                variant={demoMode === "basic" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => {
-                  setDemoMode("basic");
-                  setCurrentPlan("basic");
-                }}
-                className="h-7 text-xs rounded-full"
-              >
+              <Button variant={demoMode === "basic" ? "default" : "ghost"} size="sm" onClick={() => {
+              setDemoMode("basic");
+              setCurrentPlan("basic");
+            }} className="h-7 text-xs rounded-full">
                 Basic
               </Button>
-              <Button
-                variant={demoMode === "plus" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => {
-                  setDemoMode("plus");
-                  setCurrentPlan("plus");
-                }}
-                className="h-7 text-xs rounded-full"
-              >
+              <Button variant={demoMode === "plus" ? "default" : "ghost"} size="sm" onClick={() => {
+              setDemoMode("plus");
+              setCurrentPlan("plus");
+            }} className="h-7 text-xs rounded-full">
                 Plus
               </Button>
-              <Button
-                variant={demoMode === "pro" ? "default" : "ghost"}
-                size="sm"
-                onClick={() => {
-                  setDemoMode("pro");
-                  setCurrentPlan("pro");
-                }}
-                className="h-7 text-xs rounded-full"
-              >
+              <Button variant={demoMode === "pro" ? "default" : "ghost"} size="sm" onClick={() => {
+              setDemoMode("pro");
+              setCurrentPlan("pro");
+            }} className="h-7 text-xs rounded-full">
                 Pro
               </Button>
             </div>
@@ -198,26 +153,7 @@ const Profile = () => {
       <div className="container mx-auto px-4 py-6 space-y-6">
         {/* AI Chef Profile Card */}
         <Card className="overflow-hidden border-2 border-primary/20 shadow-temple">
-          <div className="bg-gradient-temple-gold p-6">
-            <div className="flex items-center gap-4">
-              <div className="h-20 w-20 rounded-full border-4 border-white shadow-lg overflow-hidden bg-white">
-                <img src={chimpaiLogo} alt="AI Chef Chimpai" className="h-full w-full object-cover" />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-2xl font-bold text-white">AI Chef Chimpai</h2>
-                  <Sparkles className="h-5 w-5 text-yellow-200" />
-                </div>
-                <p className="text-white/90 text-sm mt-1">
-                  ผู้ช่วยเชฟส่วนตัวที่เข้าใจรสชาติไทยของคุณ
-                </p>
-                <Badge className="mt-2 bg-white/20 text-white border-white/30">
-                  <MessageSquare className="h-3 w-3 mr-1" />
-                  พร้อมให้คำแนะนำ 24/7
-                </Badge>
-              </div>
-            </div>
-          </div>
+          
           <CardContent className="pt-4">
             <p className="text-muted-foreground text-sm leading-relaxed">
               สวัสดีครับ! ผมคือ AI Chef Chimpai ผู้ช่วยส่วนตัวที่จะช่วยคุณค้นหาเมนูอาหารไทยที่ใช่ 
@@ -232,11 +168,7 @@ const Profile = () => {
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="h-20 w-20 bg-gradient-to-br from-primary to-primary-glow rounded-full flex items-center justify-center shadow-temple">
-                  {userAvatar ? (
-                    <img src={userAvatar} alt={userName} className="h-full w-full rounded-full object-cover" />
-                  ) : (
-                    <User className="h-10 w-10 text-white" />
-                  )}
+                  {userAvatar ? <img src={userAvatar} alt={userName} className="h-full w-full rounded-full object-cover" /> : <User className="h-10 w-10 text-white" />}
                 </div>
                 <button className="absolute bottom-0 right-0 h-7 w-7 bg-white rounded-full shadow-md flex items-center justify-center border-2 border-background hover:bg-muted transition-colors">
                   <Camera className="h-4 w-4 text-primary" />
@@ -266,10 +198,10 @@ const Profile = () => {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     
-                    <DropdownMenuItem 
-                      onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
-                      className="cursor-pointer py-3"
-                    >
+                    <DropdownMenuItem onClick={() => window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: 'smooth'
+                  })} className="cursor-pointer py-3">
                       <Crown className="h-4 w-4 mr-3 text-primary" />
                       <div>
                         <div className="font-semibold">อัปเกรดแผน</div>
@@ -297,8 +229,7 @@ const Profile = () => {
         </Card>
 
         {/* Chatbot Quota Bar (for Free users only) */}
-        {demoMode === "free" && (
-          <Card className="border-2 border-primary/20 shadow-md">
+        {demoMode === "free" && <Card className="border-2 border-primary/20 shadow-md">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base flex items-center gap-2">
@@ -316,36 +247,45 @@ const Profile = () => {
                 คุณใช้งานไปแล้ว {chatbotUsage} ครั้งจาก {maxChatbots} ครั้งในเดือนนี้
                 {chatbotUsage >= maxChatbots ? " ⚠️ ถึงลิมิตแล้ว" : ` (เหลืออีก ${maxChatbots - chatbotUsage} ครั้ง)`}
               </p>
-              {chatbotUsage >= maxChatbots * 0.8 && (
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+              {chatbotUsage >= maxChatbots * 0.8 && <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
                   <p className="text-xs text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
                     <Zap className="h-4 w-4" />
                     อัปเกรดเป็นแผน Premium เพื่อใช้งานแชทบอทได้ไม่จำกัด!
                   </p>
-                </div>
-              )}
+                </div>}
             </CardContent>
-          </Card>
-        )}
+          </Card>}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
-          {[
-            { label: "สูตรที่บันทึก", value: "24", icon: BookOpen, locked: demoMode === "free" },
-            { label: "ร้านโปรด", value: "12", icon: Heart, locked: demoMode === "free" },
-            { label: "เลเวลเชฟ", value: "มือใหม่", icon: ChefHat, locked: false },
-            { label: "คะแนนรีวิว", value: "4.8", icon: Award, locked: false }
-          ].map((stat, index) => (
-            <Card key={index} className={stat.locked ? "opacity-60 relative overflow-hidden" : ""}>
+          {[{
+          label: "สูตรที่บันทึก",
+          value: "24",
+          icon: BookOpen,
+          locked: demoMode === "free"
+        }, {
+          label: "ร้านโปรด",
+          value: "12",
+          icon: Heart,
+          locked: demoMode === "free"
+        }, {
+          label: "เลเวลเชฟ",
+          value: "มือใหม่",
+          icon: ChefHat,
+          locked: false
+        }, {
+          label: "คะแนนรีวิว",
+          value: "4.8",
+          icon: Award,
+          locked: false
+        }].map((stat, index) => <Card key={index} className={stat.locked ? "opacity-60 relative overflow-hidden" : ""}>
               <CardContent className="pt-6">
-                {stat.locked && (
-                  <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] flex items-center justify-center">
+                {stat.locked && <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px] flex items-center justify-center">
                     <div className="text-center">
                       <Crown className="h-6 w-6 text-primary mx-auto mb-1" />
                       <span className="text-xs text-muted-foreground font-medium">Premium</span>
                     </div>
-                  </div>
-                )}
+                  </div>}
                 <div className="flex items-center gap-3">
                   <div className="text-primary">
                     <stat.icon className="h-6 w-6" />
@@ -356,8 +296,7 @@ const Profile = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
 
         {/* Personal Information */}
@@ -394,21 +333,13 @@ const Profile = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {subscriptionPlans.map((plan) => (
-              <Card 
-                key={plan.id}
-                className={`relative overflow-hidden transition-all hover:shadow-xl ${
-                  plan.popular ? 'border-2 border-primary scale-105' : 'border border-border'
-                } ${demoMode === plan.id ? 'ring-2 ring-primary' : ''}`}
-              >
-                {plan.popular && (
-                  <div className="absolute top-4 right-4">
+            {subscriptionPlans.map(plan => <Card key={plan.id} className={`relative overflow-hidden transition-all hover:shadow-xl ${plan.popular ? 'border-2 border-primary scale-105' : 'border border-border'} ${demoMode === plan.id ? 'ring-2 ring-primary' : ''}`}>
+                {plan.popular && <div className="absolute top-4 right-4">
                     <Badge className="bg-primary text-primary-foreground">
                       <Sparkles className="h-3 w-3 mr-1" />
                       แนะนำ
                     </Badge>
-                  </div>
-                )}
+                  </div>}
                 
                 <div className={`h-32 bg-gradient-to-br ${plan.gradient} flex flex-col items-center justify-center border-b ${plan.borderColor}`}>
                   <h3 className={`text-2xl font-bold ${plan.textColor} mb-1`}>{plan.name}</h3>
@@ -420,35 +351,23 @@ const Profile = () => {
 
                 <CardContent className="pt-6 space-y-4">
                   <ul className="space-y-3">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm">
+                    {plan.features.map((feature, idx) => <li key={idx} className="flex items-start gap-2 text-sm">
                         <Check className="h-4 w-4 text-thai-green mt-0.5 flex-shrink-0" />
                         <span className="text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
 
-                  <Button
-                    onClick={() => handleUpgradePlan(plan.id as "basic" | "plus" | "pro")}
-                    className="w-full"
-                    variant={demoMode === plan.id ? "secondary" : "default"}
-                    disabled={demoMode === plan.id}
-                  >
-                    {demoMode === plan.id ? (
-                      <>
+                  <Button onClick={() => handleUpgradePlan(plan.id as "basic" | "plus" | "pro")} className="w-full" variant={demoMode === plan.id ? "secondary" : "default"} disabled={demoMode === plan.id}>
+                    {demoMode === plan.id ? <>
                         <Check className="h-4 w-4 mr-2" />
                         แผนปัจจุบัน
-                      </>
-                    ) : (
-                      <>
+                      </> : <>
                         <Crown className="h-4 w-4 mr-2" />
                         อัปเกรดเลย
-                      </>
-                    )}
+                      </>}
                   </Button>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </div>
@@ -462,20 +381,18 @@ const Profile = () => {
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="name">ชื่อ-นามสกุล</Label>
-              <Input
-                id="name"
-                value={editForm.name}
-                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                placeholder="กรอกชื่อของคุณ"
-              />
+              <Input id="name" value={editForm.name} onChange={e => setEditForm({
+              ...editForm,
+              name: e.target.value
+            })} placeholder="กรอกชื่อของคุณ" />
             </div>
 
             <div className="space-y-2">
               <Label>เพศ</Label>
-              <RadioGroup 
-                value={editForm.gender} 
-                onValueChange={(value) => setEditForm({ ...editForm, gender: value })}
-              >
+              <RadioGroup value={editForm.gender} onValueChange={value => setEditForm({
+              ...editForm,
+              gender: value
+            })}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="ชาย" id="male" />
                   <Label htmlFor="male">ชาย</Label>
@@ -493,33 +410,26 @@ const Profile = () => {
 
             <div className="space-y-2">
               <Label htmlFor="age">อายุ</Label>
-              <Input
-                id="age"
-                type="number"
-                value={editForm.age}
-                onChange={(e) => setEditForm({ ...editForm, age: e.target.value })}
-                placeholder="กรอกอายุของคุณ"
-              />
+              <Input id="age" type="number" value={editForm.age} onChange={e => setEditForm({
+              ...editForm,
+              age: e.target.value
+            })} placeholder="กรอกอายุของคุณ" />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="diseases">โรคประจำตัว</Label>
-              <Input
-                id="diseases"
-                value={editForm.chronicDiseases}
-                onChange={(e) => setEditForm({ ...editForm, chronicDiseases: e.target.value })}
-                placeholder="ระบุโรคประจำตัว (คั่นด้วย ,)"
-              />
+              <Input id="diseases" value={editForm.chronicDiseases} onChange={e => setEditForm({
+              ...editForm,
+              chronicDiseases: e.target.value
+            })} placeholder="ระบุโรคประจำตัว (คั่นด้วย ,)" />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="allergies">อาหารที่แพ้</Label>
-              <Input
-                id="allergies"
-                value={editForm.foodAllergies}
-                onChange={(e) => setEditForm({ ...editForm, foodAllergies: e.target.value })}
-                placeholder="ระบุอาหารที่แพ้ (คั่นด้วย ,)"
-              />
+              <Input id="allergies" value={editForm.foodAllergies} onChange={e => setEditForm({
+              ...editForm,
+              foodAllergies: e.target.value
+            })} placeholder="ระบุอาหารที่แพ้ (คั่นด้วย ,)" />
             </div>
           </div>
 
@@ -533,8 +443,6 @@ const Profile = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
-  );
+    </div>;
 };
-
 export default Profile;
