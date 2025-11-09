@@ -151,16 +151,6 @@ const Profile = () => {
       </div>
 
       <div className="container mx-auto px-4 py-6 space-y-6">
-        {/* AI Chef Profile Card */}
-        <Card className="overflow-hidden border-2 border-primary/20 shadow-temple">
-          
-          <CardContent className="pt-4">
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              สวัสดีครับ! ผมคือ AI Chef Chimpai ผู้ช่วยส่วนตัวที่จะช่วยคุณค้นหาเมนูอาหารไทยที่ใช่ 
-              วิเคราะห์รสชาติที่คุณชอบ และแนะนำร้านอาหารที่ตรงใจคุณที่สุด 🍜✨
-            </p>
-          </CardContent>
-        </Card>
 
         {/* User Profile Card */}
         <Card className="shadow-thai">
